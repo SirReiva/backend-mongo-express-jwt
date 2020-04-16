@@ -1,0 +1,50 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: cms
+    ports:
+      - 27017:27017
+    expose: 
+      - 27017
+    volumes:
+      - mongodb_data_container:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks: 
+      - mongo-compose-network
+
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+    depends_on:
+      - mongo
+    networks: 
+      - mongo-compose-network
+
+  # redis:
+  #   image: redis
+  #   container_name: cache
+  #   ports:
+  #     - 6379:6379
+
+  # swagger:
+  #   image: swaggerapi/swagger-editor
+  #   ports:
+  #     - 8082:8080
+
+volumes:
+    mongodb_data_container:
+
+networks: 
+  mongo-compose-network:
+    driver: bridge

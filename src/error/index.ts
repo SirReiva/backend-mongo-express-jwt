@@ -1,0 +1,43 @@
+import { Response, NextFunction, Request } from 'express';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { Error as MongooseError } from 'mongoose';
+
+export class ErrorHandler extends Error {
+    statusCode: number;
+    constructor(statusCode: number, message: string) {
+        super();
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+}
+
+export const handleError = (err: any, res: Response) => {
+    const { statusCode = 500, message } = err;
+    res.status(statusCode).json({
+        status: "error",
+        statusCode,
+        message
+    });
+};
+
+const errorParse = (error: Error, next: NextFunction) => {
+    if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError)
+        next(new ErrorHandler(BAD_REQUEST, error.message));
+    else if(error instanceof ErrorHandler)
+        next(error);
+    else 
+        next(new ErrorHandler(INTERNAL_SERVER_ERROR, 'Error performing action'));
+}
+
+export const handlerExceptionRoute = (fn: Function): any => (req: Request, res: Response, next: NextFunction) => {
+    try {
+        fn(req, res)?.catch(($error: Error) => {
+            console.log('Promise Error', $error.name);
+            errorParse($error, next);        
+        });
+    } catch (error) {
+        console.log('Not Promise Error', error.name);
+        errorParse(error, next);
+    }
+    
+};
