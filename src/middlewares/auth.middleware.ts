@@ -5,7 +5,7 @@ import { IUser } from '../models/user.model';
 import UserModel, { IUserSchema } from '../schemas/user.schema';
 import { UNAUTHORIZED } from "http-status-codes";
 
-const checkToken = (token: string) => {
+export const checkToken = (token: string) => {
     return new Promise((resolve, reject) => {
         jwt.verify(token, config.JWTSECRET, (err, decoded) => {
             if (err)  return resolve(null);

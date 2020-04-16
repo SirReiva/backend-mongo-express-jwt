@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { BAD_REQUEST, CREATED, NOT_FOUND } from 'http-status-codes';
 import { ErrorHandler } from '../error';
+import { createRefeshToken, createToken, checkToken } from '../middlewares/auth.middleware';
 import UserModel from '../schemas/user.schema';
-import { createToken, createRefeshToken } from '../middlewares/auth.middleware';
 
-export const signUp = async (req: Request, res: Response, next: Function) => {
+export const signUp = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password)
         throw new ErrorHandler(BAD_REQUEST, 'bad request');
@@ -26,7 +26,7 @@ export const signUp = async (req: Request, res: Response, next: Function) => {
     return res.status(CREATED).json(newUser);
 };
 
-export const signIn = async (req: Request, res: Response, next: Function) => {
+export const signIn = async (req: Request, res: Response) => {
     const { name, password } = req.body;
     if (!name || !password)
         throw new ErrorHandler(BAD_REQUEST, 'bad request');
@@ -39,6 +39,21 @@ export const signIn = async (req: Request, res: Response, next: Function) => {
         return res.json({ token: createToken(user), refreshToken: createRefeshToken(user) });
     }
     throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
+};
+
+export const reSignIn = async (req: Request, res: Response) => {
+    const { refreshToken } = req.body;
+    const payload: any = await checkToken(refreshToken);
+    if(!payload) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
+    const user = await UserModel.findOne({
+        $and: [
+            { email: payload.email },
+            { name: payload.name },
+            { _id: payload.id }
+        ]
+    });
+    if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
+    return res.json({ token: createToken(user), refreshToken: createRefeshToken(user) });
 };
 
 export const getAll = async (req: Request, res: Response) => {
