@@ -26,3 +26,12 @@ export const getById = async (req: Request, res: Response) => {
     if(user) return res.json(user);
     throw new ErrorHandler(NOT_FOUND, 'User not found');
 };
+
+export const getPostsByUserId = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    res.send(await PostModel.paginate({
+        author: id
+    }, {
+        populate: 'author'
+    }));
+};

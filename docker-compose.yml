@@ -48,3 +48,7 @@ volumes:
 networks: 
   mongo-compose-network:
     driver: bridge
+
+# networks: 
+#   dockervscode_editors:
+#     external: true

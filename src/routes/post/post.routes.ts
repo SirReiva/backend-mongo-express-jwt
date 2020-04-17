@@ -14,6 +14,5 @@ router.use(ROUTE_PATH, MemCacheMiddleware(240, 'posts'));
 router.get(ROUTE_PATH, handlerExceptionRoute(getAll))
     .get(ROUTE_PATH + '/:id', handlerExceptionRoute(getById))
     .post(ROUTE_PATH, AuthJWTGuard, handlerExceptionRoute(createPost));
-// router.get('/posts', handlerExceptionRoute(getAll));
 
 export default router;

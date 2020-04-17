@@ -16,7 +16,6 @@ export const signUp = async (req: Request, res: Response) => {
     });
     if (results.length > 0)
         throw new ErrorHandler(BAD_REQUEST, 'Name or Email already in use');
-
     const newUser = new UserModel({
         email,
         name,
