@@ -12,6 +12,7 @@ const postSchema = new Schema<IPostSchema>({
     title: { type: String, required: [true, 'Title required'], trim: true, text: true },
     content: { type: String, required: [true, 'Message required'] },
     author: { type: Schema.Types.ObjectId, ref: "User", required: [true, 'User required'] },
+    public: { type: Boolean, default: false }
 }, {
     timestamps: true
 });
