@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Insomnia",
+      "description": "",
+      "contact": {},
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "/api",
+        "variables": {}
+      }
+    ],
+    "paths": {
+      "/v1/posts/5e98309caa418941c8cad9f0": {
+        "get": {
+          "tags": [
+            "Post"
+          ],
+          "summary": "Get Post By Id",
+          "description": "",
+          "operationId": "GetPostById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/v1/posts": {
+        "get": {
+          "tags": [
+            "Post"
+          ],
+          "summary": "Get All Posts",
+          "description": "",
+          "operationId": "GetAllPosts",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        },
+        "post": {
+          "tags": [
+            "Post"
+          ],
+          "summary": "Create Post",
+          "description": "",
+          "operationId": "CreatePost",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePostRequest"
+                },
+                "example": {
+                  "title": "primer post",
+                  "content": "dsfuhdasuhf udshf adh huidhsaf usdh fhusd",
+                  "author": "5e9806edbf2acd22b0cb0eb3"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/v1/users/5e9805cf4a14a70ad48c7ea2": {
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "summary": "Get User By Id",
+          "description": "",
+          "operationId": "GetUserById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/v1/users": {
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "summary": "All Users",
+          "description": "",
+          "operationId": "AllUsers",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/v1/signin": {
+        "post": {
+          "tags": [
+            "Sign"
+          ],
+          "summary": "SignIn",
+          "description": "",
+          "operationId": "SignIn",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInRequest"
+                },
+                "example": {
+                  "name": "jhhh",
+                  "password": "123456"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/v1/signup": {
+        "post": {
+          "tags": [
+            "Sign"
+          ],
+          "summary": "SignUp",
+          "description": "",
+          "operationId": "SignUp",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignUpRequest"
+                },
+                "example": {
+                  "email": "jhhh@gmail.com",
+                  "name": "jhhh",
+                  "password": "123456"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/invalid": {
+        "get": {
+          "summary": "Invalid url",
+          "description": "",
+          "operationId": "Invalidurl",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {},
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "deprecated": false
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CreatePostRequest": {
+          "title": "CreatePostRequest",
+          "required": [
+            "title",
+            "content",
+            "author"
+          ],
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            },
+            "author": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "title": "primer post",
+            "content": "dsfuhdasuhf udshf adh huidhsaf usdh fhusd",
+            "author": "5e9806edbf2acd22b0cb0eb3"
+          }
+        },
+        "SignInRequest": {
+          "title": "SignInRequest",
+          "required": [
+            "name",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "name": "jhhh",
+            "password": "123456"
+          }
+        },
+        "SignUpRequest": {
+          "title": "SignUpRequest",
+          "required": [
+            "email",
+            "name",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "email": "jhhh@gmail.com",
+            "name": "jhhh",
+            "password": "123456"
+          }
+        }
+      },
+      "securitySchemes": {
+        "httpBearer": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [
+      {
+        "httpBearer": []
+      }
+    ],
+    "tags": [
+      {
+        "name": "Post",
+        "description": ""
+      },
+      {
+        "name": "User",
+        "description": ""
+      },
+      {
+        "name": "Sign",
+        "description": ""
+      }
+    ]
+  }
