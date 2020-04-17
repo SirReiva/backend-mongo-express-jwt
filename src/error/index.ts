@@ -1,6 +1,7 @@
 import { Response, NextFunction, Request } from 'express';
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { Error as MongooseError } from 'mongoose';
+import { MongoError } from 'mongodb';
 
 export class ErrorHandler extends Error {
     statusCode: number;
@@ -21,7 +22,7 @@ export const handleError = (err: any, res: Response) => {
 };
 
 const errorParse = (error: Error, next: NextFunction) => {
-    if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError)
+    if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError || error instanceof MongoError)
         next(new ErrorHandler(BAD_REQUEST, error.message));
     else if(error instanceof ErrorHandler)
         next(error);

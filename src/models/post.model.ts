@@ -4,6 +4,8 @@ export interface IPost {
     title: string;
     content: string;
     author: IUserSchema;
+    isPublic: boolean;
+    slug: string;
     createdAt: string;
     updatedAt: string;
 }

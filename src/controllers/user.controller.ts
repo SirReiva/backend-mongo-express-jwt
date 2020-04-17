@@ -56,7 +56,12 @@ export const reSignIn = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-    res.json(await UserModel.paginate());
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    res.json(await UserModel.paginate({}, {
+        page,
+        limit
+    }));
 };
 
 export const getById = async (req: Request, res: Response) => {
