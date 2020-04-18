@@ -12,7 +12,7 @@ export class ErrorHandler extends Error {
     }
 }
 
-export const handleError = (err: any, res: Response) => {
+const handleError = (err: any, res: Response) => {
     const { statusCode = 500, message } = err;
     res.status(statusCode).json({
         status: "error",
@@ -20,6 +20,11 @@ export const handleError = (err: any, res: Response) => {
         message
     });
 };
+
+export const handleErrorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
+    handleError(err, res);
+};
+
 
 const errorParse = (error: Error, next: NextFunction) => {
     if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError || error instanceof MongoError)

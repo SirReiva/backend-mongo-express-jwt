@@ -16,14 +16,14 @@ export const checkToken = (token: string) => {
 
 export const createToken = function(user: IUserSchema) : string {
     const jwtOps: SignOptions = {
-        expiresIn: config.JWTEXPIRATION,
+        expiresIn: config.JWT_EXPIRATION,
     };
     return jwt.sign({ ...user.toJSON() }, config.JWTSECRET, jwtOps);
 };
 
 export const createRefeshToken = function(user: IUserSchema) : string {
     const jwtOps: SignOptions = {
-        expiresIn: config.JWTEXPIRATIONREFRESH,
+        expiresIn: config.JWT_EXPIRATION_REFRESH,
     };
     return jwt.sign({ ...user.toJSON() }, config.JWTSECRET, jwtOps);
 };

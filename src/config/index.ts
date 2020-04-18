@@ -1,8 +1,9 @@
 export default {
-    PROJECTNAME: "IT´s CLOBBERIN TIME",
+    PROJECT_NAME: "IT´s CLOBBERIN TIME",
     JWTSECRET: "secret",
-    JWTEXPIRATION: 3600,
-    JWTEXPIRATIONREFRESH: 126000,
+    MEMCACHE_TIMEOUT: 240,
+    JWT_EXPIRATION: 3600,
+    JWT_EXPIRATION_REFRESH: 126000,
     DB: {
         URL: "mongodb://localhost/cms",
         USER: "root",

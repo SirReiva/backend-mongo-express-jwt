@@ -2,16 +2,11 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 import { Response, Request } from 'express';
 import PostModel from '../schemas/post.schema';
 import { ErrorHandler } from '../error/index';
-import { NOT_FOUND } from 'http-status-codes';
+import { NOT_FOUND, FORBIDDEN, CREATED } from 'http-status-codes';
+import { PostService } from '../services/post.service';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
-    const post = new PostModel({
-        ...req.body,
-        author: req.user.id,
-        isPublic: false
-    });
-    await post.save();
-    res.json(await post.populate('author').execPopulate());
+    res.status(CREATED).json(await PostService.createPost(req.body, req.user.id));
 };
 
 export const getAllPublic = async (req: Request, res: Response) => {
@@ -24,31 +19,24 @@ export const getAllPublic = async (req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    if (id === undefined) throw new ErrorHandler(NOT_FOUND, 'User not found');
-    const user = await PostModel.findById(id).populate('author');
-    if(user) return res.json(user);
-    throw new ErrorHandler(NOT_FOUND, 'User not found');
+    res.json(await PostService.getPublicPostById(id));
 };
 
 export const getPublicPostsByUserId = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const { id } = req.params;
-    res.send(await PostModel.paginate({
-        author: id,
-        public: true
-    }, {
-        populate: 'author',
-        page,
-        limit
-    }));
+    res.json(await PostService.getPublicPostsByUserId(id, page, limit));
+};
+
+export const getPrivatePostsByUserId = async (req: AuthRequest, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const { id } = req.params;
+    res.json(await PostService.getPrivatePostsByUserId(req.user, id, page, limit));
 };
 
 export const getPostBySlug = async (req: Request, res: Response) => {
     const { slug } = req.params;
-    const post = await PostModel.findOne({
-        slug
-    }).populate('author').exec();
-    if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
-    return res.json(post);
+    res.json(await PostService.getPostBySlug(slug));
 };

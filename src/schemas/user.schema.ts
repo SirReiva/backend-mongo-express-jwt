@@ -1,10 +1,8 @@
-import { model, Schema, Document, PaginateModel } from 'mongoose';
 import bcrypt from 'bcrypt';
-import jwt, { SignOptions } from 'jsonwebtoken';
-import validator from 'validator';
-import config from '../config';
-import { IUser } from '../models/user.model';
+import { Document, model, PaginateModel, Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import validator from 'validator';
+import { IUser, UserRole } from '../models/user.model';
 
 export interface IUserSchema extends Document, IUser {
     comparePassword: (p: string) => Promise<boolean>;
@@ -35,6 +33,15 @@ const userSchema = new Schema<IUserSchema>({
         unique: true,
         trim: true,
         minlength: 3
+    },
+    role: {
+        type: String,
+        enum : [UserRole.USER, UserRole.ADMIN, UserRole.SUPER],
+        default: UserRole.USER
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
 }, {
     timestamps: true
@@ -59,6 +66,8 @@ userSchema.methods.toJSON = function(): Partial<IUserSchema> {
         id: this.id,
         email: this.email,
         name: this.name,
+        role: this.role,
+        active: this.active,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt
     };

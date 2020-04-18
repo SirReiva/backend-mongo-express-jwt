@@ -1,15 +1,17 @@
 import compression from 'compression';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import http from 'http';
+import express from 'express';
 import { NO_CONTENT } from 'http-status-codes';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import { handleError } from './error';
 import Routes from './routes';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from './config/swagger.json';
+import { handleErrorMiddleware } from './error';
 
-const app = express();
+export const app = express();
+export const server = http.createServer(app);
 
 app.use(cors());
 app.use(helmet());
@@ -28,12 +30,8 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(Routes);
 
-// managge errors
-app.use((err: any, req: Request, res: Response, next: Function) => {
-    handleError(err, res);
-});
+// errors handler
+app.use(handleErrorMiddleware);
 
 //fallback routes
 app.all('*', (req, res) => res.status(NO_CONTENT).send());
-
-export default app;

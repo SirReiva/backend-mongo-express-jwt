@@ -1,15 +1,15 @@
 import os from 'os';
 import cluster from 'cluster';
-import app from './app';
 import { connect } from  './database';
 import figlet from 'figlet';
 import config from './config';
+import { server } from './app';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 const init = async() => {
     await connect();
-    app.listen(3000, () => {
+    server.listen(3000, () => {
         console.log('Listen...3000')
     });
 };
@@ -21,7 +21,7 @@ const CPUS = Math.min(max, os.cpus().length);
 if (CPUS > 1) {
     switch (cluster.isMaster) {
         case true:
-            figlet(config.PROJECTNAME, (err, result) => console.log(result));
+            figlet(config.PROJECT_NAME, (err, result) => console.log(result));
             if (isProd) console.log('Producction Mode');
             console.log('Cluster Mode');
             for (let i = 0; i < CPUS; i++) { //Forge New process for Cpu
@@ -47,7 +47,7 @@ if (CPUS > 1) {
         break;
     }
 } else {
-    figlet(config.PROJECTNAME, (err, result) => console.log(result));
+    figlet(config.PROJECT_NAME, (err, result) => console.log(result));
     if (isProd) console.log('Producction Mode');
     init();
     // process.on('uncaughtException', () => {});
