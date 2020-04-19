@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { SignOptions } from 'jsonwebtoken';
 import config from "../config";
-import { IUser } from '../models/user.model';
+import { IUser } from '../interfaces/user.model';
 import UserModel, { IUserSchema } from '../schemas/user.schema';
 import { UNAUTHORIZED } from "http-status-codes";
 

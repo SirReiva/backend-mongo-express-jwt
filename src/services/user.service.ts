@@ -1,7 +1,7 @@
 import { BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import UserModel from '../schemas/user.schema';
 import { ErrorHandler } from '../error';
-import { UserRole } from '../models/user.model';
+import { UserRole } from '../interfaces/user.model';
 import { IUserSchema } from '../schemas/user.schema';
 import { createToken, createRefeshToken, checkToken } from '../middlewares/auth.middleware';
 
