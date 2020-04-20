@@ -32,7 +32,8 @@ export class UserService {
         if (!name || !password)
             throw new ErrorHandler(BAD_REQUEST, 'bad request');
         const user = await UserModel.findOne({
-            name
+            name,
+            active: true,
         });
         if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
         

@@ -64,7 +64,6 @@ userSchema.methods.comparePassword = function(password: string) : Promise<boolea
 userSchema.methods.toJSON = function(): Partial<IUserSchema> {
     return {
         id: this.id,
-        email: this.email,
         name: this.name,
         role: this.role,
         active: this.active,
