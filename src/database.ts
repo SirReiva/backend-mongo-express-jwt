@@ -8,6 +8,7 @@ export const connect = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        poolSize: 5
     };
     
     const $p = mongoose.connect(config.DB.URL, dbOptions);
@@ -20,8 +21,8 @@ export const connect = () => {
         console.log('disconected');
     });
 
-
     return $p;
+
 }
 
 // export const UserRepository = new Proxy({}, {
