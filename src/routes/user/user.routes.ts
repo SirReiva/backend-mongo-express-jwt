@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getPrivatePostsByUserId, getPublicPostsByUserId } from '../../controllers/post.controller';
-import { getAll, getById } from '../../controllers/user.controller';
+import { getAll, getById, update } from '../../controllers/user.controller';
 import { handlerExceptionRoute } from '../../error/index';
 import { AuthJWTGuard } from '../../middlewares/auth.middleware';
 
@@ -15,6 +15,7 @@ router
     .get(ROUTE_PATH, handlerExceptionRoute(getAll))
     .get(ROUTE_PATH + '/:id', handlerExceptionRoute(getById))
     .get(ROUTE_PATH + '/:id/posts', handlerExceptionRoute(getPublicPostsByUserId))
-    .get(ROUTE_PATH + '/:id/posts/private', AuthJWTGuard, handlerExceptionRoute(getPrivatePostsByUserId));
+    .get(ROUTE_PATH + '/:id/posts/private', AuthJWTGuard, handlerExceptionRoute(getPrivatePostsByUserId))
+    .put(ROUTE_PATH + '/:id', AuthJWTGuard, handlerExceptionRoute(update));
 
 export default router;

@@ -28,7 +28,7 @@ interface PostModel<T extends Document> extends PaginateModel<T> {}
 
 const postSchema = new Schema<IPostSchema>({
     title: { unique: true, type: String, required: [true, 'Title required'], trim: true, text: true },
-    content: { type: String, required: [true, 'Message required'] },
+    content: { type: String, required: [true, 'Content required'] },
     author: { type: Schema.Types.ObjectId, ref: "User", required: [true, 'User required'] },
     isPublic: { type: Boolean, default: false },
     slug: { type: String, trim: true }
