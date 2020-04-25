@@ -10,11 +10,10 @@ const isProd = process.env.NODE_ENV === 'production';
 const init = async() => {
     await connect();
     server.listen(3000, () => {
-        console.log('Listen...3000')
+        console.log('Listen...3000');
     });
 };
 
-//init();
 const activeCluster = false;
 const max = 2;
 const CPUS = Math.min(max, os.cpus().length);

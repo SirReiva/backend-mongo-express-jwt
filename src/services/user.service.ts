@@ -77,6 +77,8 @@ export class UserService {
 
     static async updateUser(id: string, partialUser: Partial<IUser>, currentUser?: IUserSchema ) {
         if (currentUser && (currentUser.id === id || currentUser.role === UserRole.SUPER)) {
+            if (!currentUser || (currentUser && currentUser.role !== UserRole.SUPER))
+                delete partialUser.role;
             delete partialUser.id;
             return await UserModel.findOneAndUpdate({
                 id
