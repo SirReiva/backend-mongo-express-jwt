@@ -1,12 +1,13 @@
-import { BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
+import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import UserModel from '../schemas/user.schema';
 import { ErrorHandler } from '../error';
-import { UserRole } from '../interfaces/user.model';
+import { UserRole, IUser } from '../interfaces/user.model';
 import { IUserSchema } from '../schemas/user.schema';
 import { createToken, createRefeshToken, checkToken } from '../middlewares/auth.middleware';
 
 export class UserService {
-    static async createUser(name: string, email: string, password: string): Promise<IUserSchema> {
+
+    static async createUser(name: string, email: string, password: string, role: UserRole = UserRole.USER, currentUSer?: IUserSchema): Promise<IUserSchema> {
         if (!name || !email || !password)
             throw new ErrorHandler(BAD_REQUEST, 'bad request');
         const results = await UserModel.find({
@@ -22,7 +23,7 @@ export class UserService {
             name,
             password,
             active: true,
-            role: UserRole.USER
+            role: (currentUSer && currentUSer.role === UserRole.SUPER)? role: UserRole.USER
         });
         await newUser.save();
         return newUser;
@@ -72,5 +73,17 @@ export class UserService {
         const user = await UserModel.findById(id);
         if(user) return user;
         throw new ErrorHandler(NOT_FOUND, 'User not found');
+    }
+
+    static async updateUser(id: string, partialUser: Partial<IUser>, currentUser?: IUserSchema ) {
+        if (currentUser && (currentUser.id === id || currentUser.role === UserRole.SUPER)) {
+            delete partialUser.id;
+            return await UserModel.findOneAndUpdate({
+                id
+            }, {
+                ...partialUser
+            });
+        }
+        return new ErrorHandler(FORBIDDEN, 'No permission');
     }
 }

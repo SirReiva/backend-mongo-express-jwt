@@ -20,7 +20,7 @@ services:
   mongo-express:
     image: mongo-express
     ports:
-      - 8081:8081
+      - 4000:8081
     restart: always
     environment:
       ME_CONFIG_MONGODB_AUTH_DATABASE: admin

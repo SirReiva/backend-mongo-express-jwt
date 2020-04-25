@@ -3,8 +3,8 @@ import { CREATED } from 'http-status-codes';
 import { UserService } from "../services/user.service";
 
 export const signUp = async (req: Request, res: Response) => {
-    const { name, email, password } = req.body;
-    return res.status(CREATED).json(await UserService.createUser(name, email, password));
+    const { name, email, password, role } = req.body;
+    return res.status(CREATED).json(await UserService.createUser(name, email, password, role, req.user));
 };
 
 export const signIn = async (req: Request, res: Response) => {

@@ -15,10 +15,10 @@ const init = async() => {
 };
 
 //init();
-
+const activeCluster = false;
 const max = 2;
 const CPUS = Math.min(max, os.cpus().length);
-if (CPUS > 1) {
+if (CPUS > 1 && activeCluster) {
     switch (cluster.isMaster) {
         case true:
             figlet(config.PROJECT_NAME, (err, result) => console.log(result));

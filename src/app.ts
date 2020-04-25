@@ -22,10 +22,6 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
-// passport configuration
-// app.use(passport.initialize());
-// passport.use(passportMiddleware);
-
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(Routes);
