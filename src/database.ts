@@ -5,6 +5,7 @@ export const connect = () => {
     const dbOptions: ConnectionOptions = {
         user: config.DB.USER,
         pass: config.DB.PASSWORD,
+        useFindAndModify: false,
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,

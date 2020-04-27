@@ -1,11 +1,13 @@
 import { fastValidator, validateError } from './common.validator';
 import { ValidationSchema } from 'fastest-validator';
+import { UserRole } from '../interfaces/user.model';
 
 
 const CreateUserSchema: ValidationSchema = {
     name: { type: "string", min: 3, max: 255, required: true },
-    email: { type: "email", required: true },
+    email: { type: "email", normalize: true, required: true },
     password: { type: 'string', required: true },
+    role: { type: "enum", values: [UserRole.USER, UserRole.ADMIN, UserRole.USER], default: UserRole.USER },
     $$strict: true
 };
 
@@ -22,7 +24,8 @@ const ReSingInUserSchema: ValidationSchema = {
 
 const UpdateUserSchema : ValidationSchema = {
     name: { type: "string", min: 3, max: 255 },
-    email: { type: "email" },
+    email: { type: "email", normalize: true },
+    role: { type: "enum", values: [UserRole.USER, UserRole.ADMIN, UserRole.USER] },
     password: { type: 'string' },
     $$strict: true
 };

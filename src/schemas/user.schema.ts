@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { Document, model, PaginateModel, Schema } from 'mongoose';
+import { Document, model, PaginateModel, Schema, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import validator from 'validator';
 import { IUser, UserRole } from '../interfaces/user.model';
@@ -51,6 +51,14 @@ userSchema.pre<IUserSchema>("save", async function(next) {
     const user = this;
     if (!user.isModified('password')) return next();
 
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(user.password, salt);
+    user.password = hash;
+    next();
+});
+
+userSchema.pre<Query<IUserSchema>>("findOneAndUpdate", async function(next) {
+    const user = this.getUpdate();
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(user.password, salt);
     user.password = hash;

@@ -2,16 +2,18 @@ import PostModel, { IPostSchema } from '../schemas/post.schema';
 import { ErrorHandler } from '../error/index';
 import { NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import { UserRole, IUser } from '../interfaces/user.model';
+import { IPost } from '../interfaces/post.model';
+import { IUserSchema } from '../schemas/user.schema';
 
 
 export class PostService {
 
     static async createPost(postInfo: Partial<IPostSchema>, id: string): Promise<IPostSchema> {
+        delete postInfo.id;
         const post = new PostModel({
             ...postInfo,
             author: id,
-            isPublic: false,
-            id: undefined
+            isPublic: false
         });
         await post.save();
         return await post.populate('author').execPopulate();
@@ -54,6 +56,39 @@ export class PostService {
         }).populate('author').exec();
         if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
         return post;
+    }
+
+    static async update(id: string, info: Partial<IPost>, user: IUserSchema) {
+        if (user.role === UserRole.SUPER) {
+            const post = await PostModel.findByIdAndUpdate(id, {
+                ...info
+            } , {
+                new: true
+            }).exec();
+            if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
+            return post;
+        } else {
+            let post = await PostModel.findById(id).exec();
+            if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
+            if (post.author.toString() !== user.id)  throw new ErrorHandler(FORBIDDEN, 'Unauthorized action');
+            post = await PostModel.findByIdAndUpdate(id, {
+                ...info
+            } , {
+                new: true
+            }).exec();
+            if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
+            return post;
+        }
+    }
+
+    static async delete(id: string, user: IUserSchema) {
+        if (user.role === UserRole.USER) return await PostModel.findByIdAndDelete(id).exec();
+        else {
+            let post = await PostModel.findById(id).exec();
+            if (!post) throw new ErrorHandler(NOT_FOUND, 'Post not found');
+            if (post.author.toString() !== user.id)  throw new ErrorHandler(FORBIDDEN, 'Unauthorized action');
+            return await PostModel.findByIdAndDelete(id).exec();
+        }
     }
 
 }

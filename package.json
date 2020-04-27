@@ -8,9 +8,10 @@
     "build": "rimraf dist && tsc -p tsconfig.prod.json",
     "start": "rimraf dist && tsc -p tsconfig.prod.json && cross-env NODE_ENV=production node dist/index.js",
     "serve": "cross-env NODE_ENV=production node dist/index.js",
+    "start:pm2": "pm2 start pm2.json",
     "test": "jest",
     "coverage": "jest --coverage",
-    "start:pm2": "pm2 start pm2.json"
+    "majestic": "npx majestic"
   },
   "keywords": [],
   "author": "Reiva",
@@ -59,5 +60,8 @@
     "ts-jest": "^25.4.0",
     "tsc-watch": "^4.2.3",
     "typescript": "^3.8.3"
+  },
+  "majestic": {
+    "args": ["--config=./jest.config.js"]
   }
 }

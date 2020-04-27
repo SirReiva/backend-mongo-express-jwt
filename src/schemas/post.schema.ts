@@ -1,4 +1,4 @@
-import { model, Schema, Document, PaginateModel } from 'mongoose';
+import { model, Schema, Document, PaginateModel, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { IPost } from '../interfaces/post.model';
 
@@ -36,10 +36,16 @@ const postSchema = new Schema<IPostSchema>({
     timestamps: true
 });
 
-postSchema.pre<IPostSchema>("save", async function(next) {
+postSchema.pre<IPostSchema>("save", function(next) {
     const post = this;
     if (!post.isModified('title')) return next();
     post.slug = string_to_slug(post.title);    
+    next();
+});
+
+postSchema.pre<Query<IPostSchema>>("findOneAndUpdate", function(next) {
+    const post = this.getUpdate();
+    post.slug = string_to_slug(post.title); 
     next();
 });
 

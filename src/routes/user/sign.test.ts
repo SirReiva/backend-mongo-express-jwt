@@ -16,7 +16,7 @@ describe('Sign Up', () => {
 describe('Sign In', () => {
     it('should create a new post', () => {
         return request.post('/api/v1/signin').send({
-            "name": "jhhh",
+            "name": "admin",
             "password": "123456"
         }).expect(200).then(res => {
             expect(res.body).toHaveProperty('token');

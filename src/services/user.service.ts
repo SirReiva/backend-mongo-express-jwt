@@ -65,10 +65,10 @@ export class UserService {
         }, {
             page,
             limit
-        })
+        });
     }
 
-    static async getById(id: string): Promise<IUserSchema> {
+    static async getById(id: string): Promise<IUser> {
         if (id === undefined) throw new ErrorHandler(NOT_FOUND, 'User not found');
         const user = await UserModel.findById(id);
         if(user) return user;
@@ -84,7 +84,7 @@ export class UserService {
                 id
             }, {
                 ...partialUser
-            });
+            }).lean();
         }
         return new ErrorHandler(FORBIDDEN, 'No permission');
     }
