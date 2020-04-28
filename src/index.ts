@@ -20,6 +20,7 @@ const CPUS = Math.min(max, os.cpus().length);
 if (CPUS > 1 && activeCluster) {
     switch (cluster.isMaster) {
         case true:
+            cluster.schedulingPolicy = cluster.SCHED_RR;// round-robin
             figlet(config.PROJECT_NAME, (err, result) => console.log(result));
             if (isProd) console.log('Producction Mode');
             console.log('Cluster Mode');

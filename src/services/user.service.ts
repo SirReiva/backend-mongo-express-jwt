@@ -79,7 +79,6 @@ export class UserService {
         if (currentUser && (currentUser.id === id || currentUser.role === UserRole.SUPER)) {
             if (!currentUser || (currentUser && currentUser.role !== UserRole.SUPER))
                 delete partialUser.role;
-            delete partialUser.id;
             return await UserModel.findOneAndUpdate({
                 id
             }, {

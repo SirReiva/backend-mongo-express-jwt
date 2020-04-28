@@ -9,7 +9,6 @@ import { IUserSchema } from '../schemas/user.schema';
 export class PostService {
 
     static async createPost(postInfo: Partial<IPostSchema>, id: string): Promise<IPostSchema> {
-        delete postInfo.id;
         const post = new PostModel({
             ...postInfo,
             author: id,
