@@ -22,7 +22,7 @@ export class PostService {
         if (id === undefined) throw new ErrorHandler(NOT_FOUND, 'User not found');
         const user = await PostModel.findById(id).populate('author');
         if(user) return user;
-        throw new ErrorHandler(NOT_FOUND, 'User not found');
+        throw new ErrorHandler(NOT_FOUND, 'Post not found');
     }
 
     static async getPublicPostsByUserId(id: string, page: number = 1, limit: number = 10) {
