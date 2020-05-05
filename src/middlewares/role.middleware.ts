@@ -4,7 +4,9 @@ import { ErrorHandler } from '../error/index';
 import { UNAUTHORIZED, FORBIDDEN } from 'http-status-codes';
 import { UserRole } from '../interfaces/user.model';
 
-
+/**
+ * @param  {UserRole[]} roles Roles authorized
+ */
 export const AuthRole = (roles: UserRole[]) => (req: Request, res: Response, next: NextFunction) => {
     
     if (!req.user) {
@@ -14,4 +16,4 @@ export const AuthRole = (roles: UserRole[]) => (req: Request, res: Response, nex
         return next(new ErrorHandler(FORBIDDEN, "No permission"));
     }
     next();
-}
+};

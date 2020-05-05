@@ -7,6 +7,14 @@ import { createToken, createRefeshToken, checkToken } from '../middlewares/auth.
 
 export class UserService {
 
+    /**
+     * @param  {string} name User name
+     * @param  {string} email User email
+     * @param  {string} password User password
+     * @param  {UserRole=UserRole.USER} role User role
+     * @param  {IUserSchema} currentUSer? Currrent user action
+     * @returns Promise
+     */
     static async createUser(name: string, email: string, password: string, role: UserRole = UserRole.USER, currentUSer?: IUserSchema): Promise<IUserSchema> {
         if (!name || !email || !password)
             throw new ErrorHandler(BAD_REQUEST, 'bad request');
@@ -29,6 +37,11 @@ export class UserService {
         return newUser;
     }
 
+    /**
+     * @param  {string} name User name
+     * @param  {string} password User password
+     * @returns Promise
+     */
     static async signIn(name: string, password: string): Promise<{token:string, refreshToken: string}> {
         if (!name || !password)
             throw new ErrorHandler(BAD_REQUEST, 'bad request');
@@ -44,6 +57,11 @@ export class UserService {
         throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
     }
 
+    
+    /**
+     * @param  {string} refreshToken Resfresh token
+     * @returns Promise
+     */
     static async refreshToken(refreshToken: string): Promise<{token:string, refreshToken: string}> {
         if (!refreshToken) throw new ErrorHandler(BAD_REQUEST, 'No token provided');
         const payload: any = await checkToken(refreshToken);
@@ -58,7 +76,11 @@ export class UserService {
         if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
         return { token: createToken(user), refreshToken: createRefeshToken(user) };
     }
-    
+
+    /**
+     * @param  {number=1} page Current page
+     * @param  {number=10} limit Page size
+     */
     static async findAll(page: number = 1, limit: number = 10) {
         return await UserModel.paginate({
             active: true
@@ -68,6 +90,10 @@ export class UserService {
         });
     }
 
+    /**
+     * @param  {string} id User ID
+     * @returns Promise
+     */
     static async getById(id: string): Promise<IUser> {
         if (id === undefined) throw new ErrorHandler(NOT_FOUND, 'User not found');
         const user = await UserModel.findById(id);
@@ -75,6 +101,12 @@ export class UserService {
         throw new ErrorHandler(NOT_FOUND, 'User not found');
     }
 
+    
+    /**
+     * @param  {string} id User ID
+     * @param  {Partial<IUser>} partialUser Partial User Schema
+     * @param  {IUserSchema} currentUser? Currrent user action
+     */
     static async update(id: string, partialUser: Partial<IUser>, currentUser?: IUserSchema ) {
         if (currentUser && (currentUser.id === id || currentUser.role === UserRole.SUPER)) {
             if (!currentUser || (currentUser && currentUser.role !== UserRole.SUPER))

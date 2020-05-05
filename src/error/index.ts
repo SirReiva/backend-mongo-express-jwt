@@ -5,6 +5,10 @@ import { MongoError } from 'mongodb';
 
 export class ErrorHandler extends Error {
     statusCode: number;
+    /**
+     * @param  {number} statusCode HTTP Error code
+     * @param  {string} message Error message
+     */
     constructor(statusCode: number, message: string) {
         super();
         this.statusCode = statusCode;
@@ -12,6 +16,10 @@ export class ErrorHandler extends Error {
     }
 }
 
+/**
+ * @param  {any} err Error ocurred before
+ * @param  {Response} res http response
+ */
 const handleError = (err: any, res: Response) => {
     const { statusCode = 500, message } = err;
     res.status(statusCode).json({
@@ -21,11 +29,20 @@ const handleError = (err: any, res: Response) => {
     });
 };
 
+/**
+ * @param  {any} err Error ocurred inside route or middelware
+ * @param  {Request} req http request
+ * @param  {Response} res http response
+ * @param  {NextFunction} next function to continue next route/middleware
+ */
 export const handleErrorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
     handleError(err, res);
 };
 
-
+/**
+ * @param  {Error} error Error ocurred inside route or middelware
+ * @param  {NextFunction} next function to continue next route/middleware
+ */
 const errorParse = (error: Error, next: NextFunction) => {
     if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError || error instanceof MongoError)
         next(new ErrorHandler(BAD_REQUEST, error.message));
@@ -35,6 +52,9 @@ const errorParse = (error: Error, next: NextFunction) => {
         next(new ErrorHandler(INTERNAL_SERVER_ERROR, 'Error performing action'));
 }
 
+/**
+ * @param  {Function} Wrapper function to handle any error inside
+ */
 export const handlerExceptionRoute = (fn: Function): any => (req: Request, res: Response, next: NextFunction) => {
     try {
         fn(req, res)?.catch(($error: Error) => {

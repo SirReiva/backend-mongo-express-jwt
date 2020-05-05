@@ -1,13 +1,17 @@
 import PostModel, { IPostSchema } from '../schemas/post.schema';
 import { ErrorHandler } from '../error/index';
 import { NOT_FOUND, FORBIDDEN } from 'http-status-codes';
-import { UserRole, IUser } from '../interfaces/user.model';
+import { UserRole } from '../interfaces/user.model';
 import { IPost } from '../interfaces/post.model';
 import { IUserSchema } from '../schemas/user.schema';
 
 
 export class PostService {
-
+    /**
+     * @param  {Partial<IPostSchema>} postInfo Partial info for Post Schema
+     * @param  {string} id Author ID
+     * @returns Promise
+     */
     static async createPost(postInfo: Partial<IPostSchema>, id: string): Promise<IPostSchema> {
         const post = new PostModel({
             ...postInfo,
@@ -18,6 +22,10 @@ export class PostService {
         return await post.populate('author').execPopulate();
     }
 
+    /**
+     * @param  {string} id Author ID
+     * @returns Promise
+     */
     static async getPublicPostById(id: string): Promise<IPostSchema> {
         if (id === undefined) throw new ErrorHandler(NOT_FOUND, 'User not found');
         const user = await PostModel.findById(id).populate('author');
@@ -25,6 +33,12 @@ export class PostService {
         throw new ErrorHandler(NOT_FOUND, 'Post not found');
     }
 
+    
+    /**
+     * @param  {string} id Author ID
+     * @param  {number=1} page Current page
+     * @param  {number=10} limit Page size
+     */
     static async getPublicPostsByUserId(id: string, page: number = 1, limit: number = 10) {
         return await PostModel.paginate({
             author: id,
@@ -36,7 +50,14 @@ export class PostService {
         });
     }
 
-    static async getPrivatePostsByUserId(currentUser: IUser, id: string, page: number = 1, limit: number = 10) {
+    
+    /**
+     * @param  {IUser} currentUser Currrent User Schema
+     * @param  {string} id Post ID
+     * @param  {number=1} page Current page
+     * @param  {number=10} limit Page size
+     */
+    static async getPrivatePostsByUserId(currentUser: IUserSchema, id: string, page: number = 1, limit: number = 10) {
         if (!currentUser || id !== currentUser.id || currentUser.role === UserRole.SUPER) throw new ErrorHandler(FORBIDDEN, 'Action not allowed');
         return await PostModel.paginate({
             author: id,
@@ -48,6 +69,11 @@ export class PostService {
         });
     }
 
+    
+    /**
+     * @param  {string} slug Post Slug
+     * @returns Promise
+     */
     static async getPostBySlug(slug: string): Promise<IPostSchema> {
         const post = await PostModel.findOne({
             slug,
@@ -57,6 +83,13 @@ export class PostService {
         return post;
     }
 
+    
+    /**
+     * @param  {string} id User ID
+     * @param  {Partial<IPost>} info Partial Post Schema
+     * @param  {IUserSchema} user User Owner Schema
+     * @returns Promise
+     */
     static async update(id: string, info: Partial<IPost>, user: IUserSchema) {
         if (user.role === UserRole.SUPER) {
             const post = await PostModel.findByIdAndUpdate(id, {
@@ -80,6 +113,12 @@ export class PostService {
         }
     }
 
+    
+    /**
+     * @param  {string} id Post ID
+     * @param  {IUserSchema} user User Schema
+     * @returns Promise
+     */
     static async delete(id: string, user: IUserSchema) {
         if (user.role === UserRole.USER) return await PostModel.findByIdAndDelete(id).exec();
         else {
