@@ -9,13 +9,13 @@ export const connect = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
-        poolSize: 5
+        poolSize: 5,
     };
-    
+
     const $p = mongoose.connect(config.DB.URL, dbOptions);
     const connection = mongoose.connection;
     connection.once('open', () => console.log('DB connected'));
-    
+
     connection.on('error', (err) => console.error('Db error', err));
 
     connection.on('disconnected', () => {
@@ -23,8 +23,7 @@ export const connect = () => {
     });
 
     return $p;
-
-}
+};
 
 // export const UserRepository = new Proxy({}, {
 //     set: function(target:any, key: string | number | symbol, value: any) { return false; },

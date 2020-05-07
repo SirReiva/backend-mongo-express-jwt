@@ -8,11 +8,6 @@ const apiPrefix = '/api/' + config.VERSION;
 
 const Routes = Router();
 
-Routes.use(apiPrefix,
-[
-    SingRoutes,
-    UserRoutes,
-    PostRoutes
-]);
+Routes.use(apiPrefix, [SingRoutes, UserRoutes, PostRoutes]);
 
 export default Routes;

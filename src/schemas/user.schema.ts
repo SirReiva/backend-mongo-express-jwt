@@ -11,43 +11,46 @@ export interface IUserSchema extends Document, IUser {
 
 interface UserModel<T extends Document> extends PaginateModel<T> {}
 
-const userSchema = new Schema<IUserSchema>({
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-        trim: true,
-        lowercase: true,
-        validate: (value: string): boolean => {
-            return validator.isEmail(value);
-        }
+const userSchema = new Schema<IUserSchema>(
+    {
+        email: {
+            type: String,
+            unique: true,
+            required: true,
+            trim: true,
+            lowercase: true,
+            validate: (value: string): boolean => {
+                return validator.isEmail(value);
+            },
+        },
+        password: {
+            type: String,
+            required: true,
+            minlength: 4,
+        },
+        name: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+            minlength: 3,
+        },
+        role: {
+            type: String,
+            enum: [UserRole.USER, UserRole.ADMIN, UserRole.SUPER],
+            default: UserRole.USER,
+        },
+        active: {
+            type: Boolean,
+            default: true,
+        },
     },
-    password: {
-        type: String,
-        required: true,
-        minlength: 4
-    },
-    name: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength: 3
-    },
-    role: {
-        type: String,
-        enum : [UserRole.USER, UserRole.ADMIN, UserRole.SUPER],
-        default: UserRole.USER
-    },
-    active: {
-        type: Boolean,
-        default: true
+    {
+        timestamps: true,
     }
-}, {
-    timestamps: true
-});
+);
 
-userSchema.pre<IUserSchema>("save", async function(next) {
+userSchema.pre<IUserSchema>('save', async function (next) {
     const user = this;
     if (!user.isModified('password')) return next();
 
@@ -57,7 +60,7 @@ userSchema.pre<IUserSchema>("save", async function(next) {
     next();
 });
 
-userSchema.pre<Query<IUserSchema>>("findOneAndUpdate", async function(next) {
+userSchema.pre<Query<IUserSchema>>('findOneAndUpdate', async function (next) {
     const user = this.getUpdate();
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(user.password, salt);
@@ -65,20 +68,22 @@ userSchema.pre<Query<IUserSchema>>("findOneAndUpdate", async function(next) {
     next();
 });
 
-userSchema.methods.comparePassword = function(password: string) : Promise<boolean> {
+userSchema.methods.comparePassword = function (
+    password: string
+): Promise<boolean> {
     return bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.toJSON = function(): Partial<IUserSchema> {
+userSchema.methods.toJSON = function (): Partial<IUserSchema> {
     return {
         id: this.id,
         name: this.name,
         role: this.role,
         active: this.active,
         createdAt: this.createdAt,
-        updatedAt: this.updatedAt
+        updatedAt: this.updatedAt,
     };
-}
+};
 
 userSchema.plugin(mongoosePaginate);
 

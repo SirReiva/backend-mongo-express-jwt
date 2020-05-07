@@ -23,9 +23,9 @@ export class ErrorHandler extends Error {
 const handleError = (err: any, res: Response) => {
     const { statusCode = 500, message } = err;
     res.status(statusCode).json({
-        status: "error",
+        status: 'error',
         statusCode,
-        message
+        message,
     });
 };
 
@@ -35,7 +35,12 @@ const handleError = (err: any, res: Response) => {
  * @param  {Response} res http response
  * @param  {NextFunction} next function to continue next route/middleware
  */
-export const handleErrorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const handleErrorMiddleware = (
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     handleError(err, res);
 };
 
@@ -44,26 +49,34 @@ export const handleErrorMiddleware = (err: any, req: Request, res: Response, nex
  * @param  {NextFunction} next function to continue next route/middleware
  */
 const errorParse = (error: Error, next: NextFunction) => {
-    if (error instanceof MongooseError.ValidationError || error instanceof  MongooseError.CastError || error instanceof MongoError)
+    if (
+        error instanceof MongooseError.ValidationError ||
+        error instanceof MongooseError.CastError ||
+        error instanceof MongoError
+    )
         next(new ErrorHandler(BAD_REQUEST, error.message));
-    else if(error instanceof ErrorHandler)
-        next(error);
-    else 
-        next(new ErrorHandler(INTERNAL_SERVER_ERROR, 'Error performing action'));
-}
+    else if (error instanceof ErrorHandler) next(error);
+    else
+        next(
+            new ErrorHandler(INTERNAL_SERVER_ERROR, 'Error performing action')
+        );
+};
 
 /**
  * @param  {Function} Wrapper function to handle any error inside
  */
-export const handlerExceptionRoute = (fn: Function): any => (req: Request, res: Response, next: NextFunction) => {
+export const handlerExceptionRoute = (fn: Function): any => (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         fn(req, res)?.catch(($error: Error) => {
             console.log('Promise Error', $error.name);
-            errorParse($error, next);        
+            errorParse($error, next);
         });
     } catch (error) {
         console.log('Not Promise Error', error.name);
         errorParse(error, next);
     }
-    
 };

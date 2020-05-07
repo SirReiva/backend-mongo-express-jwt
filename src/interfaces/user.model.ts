@@ -1,7 +1,7 @@
 export enum UserRole {
     USER = 'USER',
     ADMIN = 'ADMIN',
-    SUPER = 'SUPER'
+    SUPER = 'SUPER',
 }
 
 export interface IUser {
@@ -12,5 +12,5 @@ export interface IUser {
     role: UserRole;
     createdAt: string;
     updatedAt: string;
-    active: true
+    active: true;
 }

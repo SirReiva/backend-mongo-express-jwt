@@ -7,13 +7,16 @@ import { UserRole } from '../interfaces/user.model';
 /**
  * @param  {UserRole[]} roles Roles authorized
  */
-export const AuthRole = (roles: UserRole[]) => (req: Request, res: Response, next: NextFunction) => {
-    
+export const AuthRole = (roles: UserRole[]) => (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     if (!req.user) {
-        return next(new ErrorHandler(UNAUTHORIZED, "UnAuthorized"));
+        return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
     }
     if (!roles.includes((req as AuthRequest).user.role)) {
-        return next(new ErrorHandler(FORBIDDEN, "No permission"));
+        return next(new ErrorHandler(FORBIDDEN, 'No permission'));
     }
     next();
 };
