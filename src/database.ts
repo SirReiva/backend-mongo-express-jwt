@@ -25,6 +25,23 @@ export const connect = () => {
     return $p;
 };
 
+/**
+ * @param  {Function} cb Function to execute with transaction
+ */
+export const transactionWrapper = async <T>(
+    cb: () => Promise<T>
+): Promise<T> => {
+    const transaction = await mongoose.connection.startSession();
+    try {
+        const res = await cb();
+        transaction.endSession();
+        return res;
+    } catch (error) {
+        await transaction.abortTransaction();
+        throw error;
+    }
+};
+
 // export const UserRepository = new Proxy({}, {
 //     set: function(target:any, key: string | number | symbol, value: any) { return false; },
 //     get: function(target:any, key: string | number | symbol, reciever: any): any {
