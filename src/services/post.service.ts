@@ -24,6 +24,17 @@ export class PostService {
         return await post.populate('author').execPopulate();
     }
 
+    static async getPublicPosts() {
+        return await PostModel.paginate(
+            {
+                isPublic: true,
+            },
+            {
+                populate: 'author',
+            }
+        );
+    }
+
     /**
      * @param  {string} id Author ID
      * @returns Promise

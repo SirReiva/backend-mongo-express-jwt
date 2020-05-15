@@ -12,7 +12,7 @@ export const fastValidator = new Validator({
 
 export const validateError = (
     schemaValidator: (value: any) => true | ValidationError[]
-) => (target: any) => {
+) => (target: Object) => {
     const errors = schemaValidator(target);
     if (Array.isArray(errors)) {
         throw new ErrorHandler(

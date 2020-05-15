@@ -12,16 +12,7 @@ export const createPost = async (req: AuthRequest, res: Response) => {
 };
 
 export const getAllPublic = async (req: Request, res: Response) => {
-    res.json(
-        await PostModel.paginate(
-            {
-                isPublic: true,
-            },
-            {
-                populate: 'author',
-            }
-        )
-    );
+    res.json(await PostService.getPublicPosts());
 };
 
 export const getById = async (req: Request, res: Response) => {
