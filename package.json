@@ -23,6 +23,7 @@
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
+    "express-status-monitor": "^1.3.2",
     "fastest-validator": "^1.2.0",
     "figlet": "^1.3.0",
     "helmet": "^3.22.0",
@@ -62,6 +63,8 @@
     "typescript": "^3.8.3"
   },
   "majestic": {
-    "args": ["--config=./jest.config.js"]
+    "args": [
+      "--config=./jest.config.js"
+    ]
   }
 }

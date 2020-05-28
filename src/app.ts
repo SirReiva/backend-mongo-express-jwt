@@ -25,8 +25,10 @@ app.use(
 );
 app.use(express.json());
 
-if (!isProd)
+if (!isProd) {
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use(require('express-status-monitor')());
+}
 
 app.use(Routes);
 

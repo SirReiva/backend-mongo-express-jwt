@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
 import { AuthRequest } from '../middlewares/auth.middleware';
-import PostModel from '../schemas/post.schema';
 import { PostService } from '../services/post.service';
 import { UpdatePostSchemaValidator } from '../validators/post.validator';
 
@@ -11,7 +10,7 @@ export const createPost = async (req: AuthRequest, res: Response) => {
     );
 };
 
-export const getAllPublic = async (req: Request, res: Response) => {
+export const getAllPublic = async (_req: Request, res: Response) => {
     res.json(await PostService.getPublicPosts());
 };
 

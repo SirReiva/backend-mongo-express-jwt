@@ -6,6 +6,8 @@ import {
 import { getAll, getById, update } from '../../controllers/user.controller';
 import { handlerExceptionRoute } from '../../error/index';
 import { AuthJWTGuard } from '../../middlewares/auth.middleware';
+import { AuthRole } from '../../middlewares/role.middleware';
+import { UserRole } from '../../interfaces/user.model';
 
 const ROUTE_PATH = '/users';
 
@@ -23,7 +25,7 @@ router
     )
     .get(
         ROUTE_PATH + '/:id/posts/private',
-        AuthJWTGuard,
+        [AuthJWTGuard, AuthRole([UserRole.ADMIN, UserRole.SUPER])],
         handlerExceptionRoute(getPrivatePostsByUserId)
     )
     .put(ROUTE_PATH + '/:id', AuthJWTGuard, handlerExceptionRoute(update));
