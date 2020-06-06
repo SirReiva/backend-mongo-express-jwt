@@ -17,7 +17,7 @@ export const server = http.createServer(app);
 app.use(cors());
 app.use(helmet());
 app.use(compression()); // nginx better
-if (!isProd) app.use(morgan('dev')); // only dev
+
 app.use(
     express.urlencoded({
         extended: true,
@@ -26,6 +26,7 @@ app.use(
 app.use(express.json());
 
 if (!isProd) {
+    app.use(morgan('dev'));
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use(require('express-status-monitor')());
 }
