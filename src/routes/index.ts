@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import config from '../config';
-import SingRoutes from './user/sign.routes';
-import UserRoutes from './user/user.routes';
-import PostRoutes from './post/post.routes';
+import config from '@Config/index';
+import SingRoutes from '@Routes/user/sign.routes';
+import UserRoutes from '@Routes/user/user.routes';
+import PostRoutes from '@Routes/post/post.routes';
 
 const apiPrefix = '/api/' + config.VERSION;
 

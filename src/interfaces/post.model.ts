@@ -1,4 +1,5 @@
-import { IUserSchema } from '../schemas/user.schema';
+import { IUserSchema } from '@Schemas/user.schema';
+
 export interface IPost {
     id?: any;
     title: string;

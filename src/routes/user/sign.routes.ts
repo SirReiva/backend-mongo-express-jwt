@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { signIn, signUp, reSignIn } from '../../controllers/user.controller';
-import { handlerExceptionRoute } from '../../error/index';
+import { signIn, signUp, reSignIn } from '@Controllers/user.controller';
+import { handlerExceptionRoute } from '@Error';
 
 const ROUTE_PATH = '/sign';
 

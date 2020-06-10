@@ -1,5 +1,5 @@
 import Validator, { ValidationError } from 'fastest-validator';
-import { ErrorHandler } from '../error';
+import { ErrorHandler } from '@Error';
 import { BAD_REQUEST } from 'http-status-codes';
 
 export const fastValidator = new Validator({

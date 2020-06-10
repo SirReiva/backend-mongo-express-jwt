@@ -5,10 +5,11 @@ import express from 'express';
 import { NO_CONTENT } from 'http-status-codes';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import Routes from './routes';
+import Routes from '@Routes/index';
 import swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from './config/swagger.json';
-import { handleErrorMiddleware } from './error';
+import * as swaggerDocument from '@Config/swagger.json';
+import { handleErrorMiddleware } from '@Error';
+
 const isProd = process.env.NODE_ENV === 'production';
 
 export const app = express();

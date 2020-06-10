@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
-import { UserService } from '../services/user.service';
+import { UserService } from '@Services/user.service';
 import {
     CreateUserSchemaValidator,
     SignInUserSchemaValidator,
     ReSignInUserSchemaValidator,
     UpdateserSchemaValidator,
-} from '../validators/user.validator';
-import { AuthRequest } from '../middlewares/auth.middleware';
+} from '@Validators/user.validator';
+import { AuthRequest } from '@Middlewares/auth.middleware';
 
 export const signUp = async (req: Request, res: Response) => {
     CreateUserSchemaValidator(req.body);

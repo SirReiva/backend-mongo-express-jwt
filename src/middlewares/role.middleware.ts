@@ -1,8 +1,8 @@
 import { NextFunction, Response, Request } from 'express';
-import { AuthRequest } from './auth.middleware';
-import { ErrorHandler } from '../error/index';
+import { AuthRequest } from '@Middlewares/auth.middleware';
+import { ErrorHandler } from '@Error';
 import { UNAUTHORIZED, FORBIDDEN } from 'http-status-codes';
-import { UserRole } from '../interfaces/user.model';
+import { UserRole } from '@Interfaces/user.model';
 
 /**
  * @param  {UserRole[]} roles Roles authorized
