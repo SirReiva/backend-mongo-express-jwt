@@ -18,7 +18,6 @@ export class PostService {
         const post = new PostModel({
             ...postInfo,
             author: id,
-            isPublic: false,
         });
         await post.save();
         return await post.populate('author').execPopulate();
