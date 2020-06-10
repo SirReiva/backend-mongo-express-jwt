@@ -14,8 +14,8 @@ export class UserService {
      * @param  {string} name User name
      * @param  {string} email User email
      * @param  {string} password User password
-     * @param  {UserRole=UserRole.USER} role User role
-     * @param  {IUserSchema} currentUSer? Currrent user action
+     * @param  {UserRole} [role==UserRole.USER] User role
+     * @param  {IUserSchema=} currentUSer Currrent user action
      * @returns Promise
      */
     static async createUser(
@@ -98,8 +98,8 @@ export class UserService {
     }
 
     /**
-     * @param  {number=1} page Current page
-     * @param  {number=10} limit Page size
+     * @param  {number} [page=1] Current page
+     * @param  {number} [limit=10] Page size
      */
     static async findAll(page: number = 1, limit: number = 10) {
         return await UserModel.paginate(

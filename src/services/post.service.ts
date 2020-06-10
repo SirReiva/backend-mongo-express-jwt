@@ -48,8 +48,8 @@ export class PostService {
 
     /**
      * @param  {string} id Author ID
-     * @param  {number=1} page Current page
-     * @param  {number=10} limit Page size
+     * @param  {number} [page=1] Current page
+     * @param  {number} [limit=10] Page size
      */
     static async getPublicPostsByUserId(
         id: string,
@@ -72,8 +72,8 @@ export class PostService {
     /**
      * @param  {IUser} currentUser Current User Schema
      * @param  {string} id Post ID
-     * @param  {number=1} page Current page
-     * @param  {number=10} limit Page size
+     * @param  {number} [page=1] Current page
+     * @param  {number} [limit=10] Page size
      */
     static async getPrivatePostsByUserId(
         currentUser: IUserSchema,
