@@ -4,7 +4,7 @@ import {
     getPublicPostsByUserId,
 } from '@Controllers/post.controller';
 import { getAll, getById, update } from '@Controllers/user.controller';
-import { handlerExceptionRoute } from '@Error';
+import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRole } from '@Middlewares/role.middleware';
 import { UserRole } from '@Interfaces/user.model';

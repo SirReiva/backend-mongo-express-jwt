@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import Routes from '@Routes/index';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '@Config/swagger.json';
-import { handleErrorMiddleware } from '@Error';
+import { handleErrorMiddleware } from '@Error/index';
 
 const isProd = process.env.NODE_ENV === 'production';
 

@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
 import { AuthRequest } from '@Middlewares/auth.middleware';
-import { ErrorHandler } from '@Error';
+import { ErrorHandler } from '@Error/index';
 import { UNAUTHORIZED, FORBIDDEN } from 'http-status-codes';
 import { UserRole } from '@Interfaces/user.model';
 

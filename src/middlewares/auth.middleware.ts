@@ -3,7 +3,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import config from '@Config/index';
 import UserModel, { IUserSchema } from '@Schemas/user.schema';
 import { UNAUTHORIZED } from 'http-status-codes';
-import { ErrorHandler } from '@Error';
+import { ErrorHandler } from '@Error/index';
 
 export interface AuthRequest extends Request {
     user: IUserSchema;

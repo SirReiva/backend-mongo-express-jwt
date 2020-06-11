@@ -1,6 +1,6 @@
 import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import UserModel from '@Schemas/user.schema';
-import { ErrorHandler } from '@Error';
+import { ErrorHandler } from '@Error/index';
 import { UserRole, IUser } from '@Interfaces/user.model';
 import { IUserSchema } from '@Schemas/user.schema';
 import {
