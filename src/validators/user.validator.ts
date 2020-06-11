@@ -45,6 +45,6 @@ export const ReSignInUserSchemaValidator = validateError(
 export const CreateUserSchemaValidator = validateError(
     fastValidator.compile(CreateUserSchema)
 );
-export const UpdateserSchemaValidator = validateError(
+export const UpdateUserSchemaValidator = validateError(
     fastValidator.compile(UpdateUserSchema)
 );

@@ -7,7 +7,7 @@ import { AuthRequest } from '@Interfaces/authRequest.interface';
 /**
  * @param  {UserRole[]} roles Roles authorized
  */
-export const AuthRole = (roles: UserRole[]) => (
+export const AuthRoleGuard = (roles: UserRole[]) => (
     req: Request,
     res: Response,
     next: NextFunction

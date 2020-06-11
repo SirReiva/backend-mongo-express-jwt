@@ -9,8 +9,13 @@ import {
 } from '@Controllers/post.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
-import { AuthRole } from '@Middlewares/role.middleware';
+import { AuthRoleGuard } from '@Middlewares/role.middleware';
 import { UserRole } from '@Interfaces/user.interface';
+import { ValidationGuard } from '@Middlewares/validator.middleware';
+import {
+    CreatePostSchemaValidator,
+    UpdatePostSchemaValidator,
+} from '@Validators/post.validator';
 
 const ROUTE_PATH = '/posts';
 
@@ -25,17 +30,25 @@ router
     .get(ROUTE_PATH + '/:id', handlerExceptionRoute(getById))
     .post(
         ROUTE_PATH,
-        [AuthJWTGuard, AuthRole([UserRole.ADMIN, UserRole.SUPER])],
+        [
+            ValidationGuard(CreatePostSchemaValidator),
+            AuthJWTGuard,
+            AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
+        ],
         handlerExceptionRoute(createPost)
     )
     .put(
         ROUTE_PATH + '/:id',
-        [AuthJWTGuard, AuthRole([UserRole.ADMIN, UserRole.SUPER])],
+        [
+            ValidationGuard(UpdatePostSchemaValidator),
+            AuthJWTGuard,
+            AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
+        ],
         handlerExceptionRoute(updatePost)
     )
     .delete(
         ROUTE_PATH + '/:id',
-        [AuthJWTGuard, AuthRole([UserRole.ADMIN, UserRole.SUPER])],
+        [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
         handlerExceptionRoute(deletePost)
     );
 

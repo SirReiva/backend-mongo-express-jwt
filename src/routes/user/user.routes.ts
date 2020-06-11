@@ -6,8 +6,10 @@ import {
 import { getAll, getById, update } from '@Controllers/user.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
-import { AuthRole } from '@Middlewares/role.middleware';
+import { AuthRoleGuard } from '@Middlewares/role.middleware';
 import { UserRole } from '@Interfaces/user.interface';
+import { ValidationGuard } from '@Middlewares/validator.middleware';
+import { UpdateUserSchemaValidator } from '@Validators/user.validator';
 
 const ROUTE_PATH = '/users';
 
@@ -25,9 +27,13 @@ router
     )
     .get(
         ROUTE_PATH + '/:id/posts/private',
-        [AuthJWTGuard, AuthRole([UserRole.ADMIN, UserRole.SUPER])],
+        [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
         handlerExceptionRoute(getPrivatePostsByUserId)
     )
-    .put(ROUTE_PATH + '/:id', AuthJWTGuard, handlerExceptionRoute(update));
+    .put(
+        ROUTE_PATH + '/:id',
+        [ValidationGuard(UpdateUserSchemaValidator), AuthJWTGuard],
+        handlerExceptionRoute(update)
+    );
 
 export default router;
