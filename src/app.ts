@@ -10,6 +10,8 @@ import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '@Config/swagger.json';
 import { handleErrorMiddleware } from '@Error/index';
 import { rateLimiterMiddleware } from '@Middlewares/rate.middleware';
+import * as swStats from 'swagger-stats';
+import { BasicAuthGuard } from '@Middlewares/basicAuth.middleware';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -32,6 +34,10 @@ if (!isProd) {
     app.use(morgan('dev'));
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use(require('express-status-monitor')());
+    app.use(
+        BasicAuthGuard,
+        swStats.getMiddleware({ swaggerSpec: swaggerDocument })
+    );
 }
 
 app.use(Routes);
