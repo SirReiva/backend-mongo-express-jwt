@@ -1,6 +1,6 @@
 import { model, Schema, Document, PaginateModel, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { IPost } from '@Interfaces/post.model';
+import { IPost } from '@Interfaces/post.interface';
 
 const string_to_slug = (str: string): string => {
     str = str.replace(/^\s+|\s+$/g, ''); // trim

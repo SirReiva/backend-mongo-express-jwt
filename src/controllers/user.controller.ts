@@ -7,7 +7,7 @@ import {
     ReSignInUserSchemaValidator,
     UpdateserSchemaValidator,
 } from '@Validators/user.validator';
-import { AuthRequest } from '@Middlewares/auth.middleware';
+import { AuthRequest } from '@Interfaces/authRequest.interface';
 
 export const signUp = async (req: Request, res: Response) => {
     CreateUserSchemaValidator(req.body);

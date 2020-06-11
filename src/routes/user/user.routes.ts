@@ -7,7 +7,7 @@ import { getAll, getById, update } from '@Controllers/user.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRole } from '@Middlewares/role.middleware';
-import { UserRole } from '@Interfaces/user.model';
+import { UserRole } from '@Interfaces/user.interface';
 
 const ROUTE_PATH = '/users';
 

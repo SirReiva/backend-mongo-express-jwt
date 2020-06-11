@@ -1,6 +1,6 @@
 import { fastValidator, validateError } from '@Validators/common.validator';
 import { ValidationSchema } from 'fastest-validator';
-import { UserRole } from '@Interfaces/user.model';
+import { UserRole } from '@Interfaces/user.interface';
 
 const CreateUserSchema: ValidationSchema = {
     name: { type: 'string', min: 3, max: 255, required: true },
