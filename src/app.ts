@@ -35,6 +35,7 @@ if (!isProd) {
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use(require('express-status-monitor')());
     app.use(
+        '/swagger-stats/ui',
         BasicAuthGuard,
         swStats.getMiddleware({ swaggerSpec: swaggerDocument })
     );
