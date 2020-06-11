@@ -18,7 +18,6 @@ const isProd = process.env.NODE_ENV === 'production';
 export const app = express();
 export const server = http.createServer(app);
 
-app.use(rateLimiterMiddleware);
 app.use(cors());
 app.use(helmet());
 app.use(compression()); // nginx better
@@ -34,13 +33,14 @@ if (!isProd) {
     app.use(morgan('dev'));
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use(require('express-status-monitor')());
-    app.use(
-        '/swagger-stats/ui',
+    app.all(
+        '/swagger-stats/*',
         BasicAuthGuard,
         swStats.getMiddleware({ swaggerSpec: swaggerDocument })
     );
 }
 
+app.use(rateLimiterMiddleware);
 app.use(Routes);
 
 // errors handler
