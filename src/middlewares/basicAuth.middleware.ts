@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import UserModel from '@Schemas/user.schema';
+import { UNAUTHORIZED } from 'http-status-codes';
 
 export const BasicAuthGuard = async (
     req: Request,
@@ -17,8 +18,7 @@ export const BasicAuthGuard = async (
     if (user && (await user.comparePassword(password))) {
         next();
     } else {
-        res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="cms"');
-        res.end('Unauthorized');
+        res.status(UNAUTHORIZED).send('Unauthorized');
     }
 };
