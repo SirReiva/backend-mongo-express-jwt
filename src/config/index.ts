@@ -9,6 +9,10 @@ export default {
         USER: 'root',
         PASSWORD: 'root',
     },
+    SWAGGER: {
+        USER: 'root',
+        PASSWORD: 'root',
+    },
     VERSION: 'v1',
     RATE: {
         POINTS: 6,

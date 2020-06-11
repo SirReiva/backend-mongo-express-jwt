@@ -10,6 +10,11 @@ const opts: IRateLimiterOptions = {
 
 const rateLimiter = new RateLimiterMemory(opts);
 
+/**
+ * @param  {Request} req http request
+ * @param  {Response} res http response
+ * @param  {NextFunction} next Function to continue
+ */
 export const rateLimiterMiddleware = (
     req: Request,
     res: Response,
