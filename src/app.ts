@@ -9,12 +9,14 @@ import Routes from '@Routes/index';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '@Config/swagger.json';
 import { handleErrorMiddleware } from '@Error/index';
+import { rateLimiterMiddleware } from '@Middlewares/rate.middleware';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 export const app = express();
 export const server = http.createServer(app);
 
+app.use(rateLimiterMiddleware);
 app.use(cors());
 app.use(helmet());
 app.use(compression()); // nginx better
