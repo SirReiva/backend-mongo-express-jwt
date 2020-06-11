@@ -1,13 +1,13 @@
 import { NextFunction, Response, Request } from 'express';
-import { AuthRequest } from '@Middlewares/auth.middleware';
 import { ErrorHandler } from '@Error/index';
 import { UNAUTHORIZED, FORBIDDEN } from 'http-status-codes';
-import { UserRole } from '@Interfaces/user.model';
+import { UserRole } from '@Interfaces/user.interface';
+import { AuthRequest } from '@Interfaces/authRequest.interface';
 
 /**
  * @param  {UserRole[]} roles Roles authorized
  */
-export const AuthRole = (roles: UserRole[]) => (
+export const AuthRoleGuard = (roles: UserRole[]) => (
     req: Request,
     res: Response,
     next: NextFunction

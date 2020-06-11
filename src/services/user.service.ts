@@ -1,13 +1,13 @@
 import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import UserModel from '@Schemas/user.schema';
 import { ErrorHandler } from '@Error/index';
-import { UserRole, IUser } from '@Interfaces/user.model';
+import { UserRole, IUser } from '@Interfaces/user.interface';
 import { IUserSchema } from '@Schemas/user.schema';
 import {
     createToken,
     createRefeshToken,
     checkToken,
-} from '@Middlewares/auth.middleware';
+} from '@Token/actions.token';
 
 export class UserService {
     /**

@@ -1,6 +1,6 @@
 import { fastValidator, validateError } from '@Validators/common.validator';
 import { ValidationSchema } from 'fastest-validator';
-import { UserRole } from '@Interfaces/user.model';
+import { UserRole } from '@Interfaces/user.interface';
 
 const CreateUserSchema: ValidationSchema = {
     name: { type: 'string', min: 3, max: 255, required: true },
@@ -45,6 +45,6 @@ export const ReSignInUserSchemaValidator = validateError(
 export const CreateUserSchemaValidator = validateError(
     fastValidator.compile(CreateUserSchema)
 );
-export const UpdateserSchemaValidator = validateError(
+export const UpdateUserSchemaValidator = validateError(
     fastValidator.compile(UpdateUserSchema)
 );

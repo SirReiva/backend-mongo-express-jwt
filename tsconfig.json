@@ -18,6 +18,7 @@
             "@Validators/*": ["validators/*"],
             "@Services/*": ["services/*"],
             "@Routes/*": ["routes/*"],
+            "@Token/*": ["token/*"],
             "@Error/*": ["error/*"]
         },
         "allowSyntheticDefaultImports": true,

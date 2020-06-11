@@ -1,8 +1,7 @@
+import { AuthRequest } from '@Interfaces/authRequest.interface';
+import { PostService } from '@Services/post.service';
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
-import { AuthRequest } from '@Middlewares/auth.middleware';
-import { PostService } from '@Services/post.service';
-import { UpdatePostSchemaValidator } from '@Validators/post.validator';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
     res.status(CREATED).json(
@@ -44,7 +43,6 @@ export const getPostBySlug = async (req: Request, res: Response) => {
 };
 
 export const updatePost = async (req: AuthRequest, res: Response) => {
-    UpdatePostSchemaValidator(req.body);
     const { id } = req.params;
     res.json(await PostService.update(id, req.body, req.user));
 };

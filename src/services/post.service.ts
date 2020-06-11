@@ -1,8 +1,8 @@
 import PostModel, { IPostSchema } from '@Schemas/post.schema';
 import { ErrorHandler } from '@Error/index';
 import { NOT_FOUND, FORBIDDEN } from 'http-status-codes';
-import { UserRole } from '@Interfaces/user.model';
-import { IPost } from '@Interfaces/post.model';
+import { UserRole } from '@Interfaces/user.interface';
+import { IPost } from '@Interfaces/post.interface';
 import { IUserSchema } from '@Schemas/user.schema';
 
 export class PostService {

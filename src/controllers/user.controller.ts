@@ -1,16 +1,9 @@
+import { AuthRequest } from '@Interfaces/authRequest.interface';
+import { UserService } from '@Services/user.service';
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
-import { UserService } from '@Services/user.service';
-import {
-    CreateUserSchemaValidator,
-    SignInUserSchemaValidator,
-    ReSignInUserSchemaValidator,
-    UpdateserSchemaValidator,
-} from '@Validators/user.validator';
-import { AuthRequest } from '@Middlewares/auth.middleware';
 
 export const signUp = async (req: Request, res: Response) => {
-    CreateUserSchemaValidator(req.body);
     const { name, email, password, role } = req.body;
     return res
         .status(CREATED)
@@ -20,13 +13,11 @@ export const signUp = async (req: Request, res: Response) => {
 };
 
 export const signIn = async (req: Request, res: Response) => {
-    SignInUserSchemaValidator(req.body);
     const { name, password } = req.body;
     res.json(await UserService.signIn(name, password));
 };
 
 export const reSignIn = async (req: Request, res: Response) => {
-    ReSignInUserSchemaValidator(req.body);
     const { refreshToken } = req.body;
     res.json(await UserService.refreshToken(refreshToken));
 };
@@ -43,7 +34,6 @@ export const getById = async (req: Request, res: Response) => {
 };
 
 export const update = async (req: AuthRequest, res: Response) => {
-    UpdateserSchemaValidator(req.body);
     const { id } = req.params;
     res.json(await UserService.update(id, req.body, req.user));
 };
