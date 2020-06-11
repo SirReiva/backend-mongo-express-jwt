@@ -10,4 +10,9 @@ export default {
         PASSWORD: 'root',
     },
     VERSION: 'v1',
+    RATE: {
+        POINTS: 6,
+        DURATION: 1,
+        BLOCKDURATION: 2,
+    },
 };
