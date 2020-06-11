@@ -2,12 +2,12 @@ import { Router } from 'express';
 import {
     getPrivatePostsByUserId,
     getPublicPostsByUserId,
-} from '../../controllers/post.controller';
-import { getAll, getById, update } from '../../controllers/user.controller';
-import { handlerExceptionRoute } from '../../error/index';
-import { AuthJWTGuard } from '../../middlewares/auth.middleware';
-import { AuthRole } from '../../middlewares/role.middleware';
-import { UserRole } from '../../interfaces/user.model';
+} from '@Controllers/post.controller';
+import { getAll, getById, update } from '@Controllers/user.controller';
+import { handlerExceptionRoute } from '@Error/index';
+import { AuthJWTGuard } from '@Middlewares/auth.middleware';
+import { AuthRole } from '@Middlewares/role.middleware';
+import { UserRole } from '@Interfaces/user.model';
 
 const ROUTE_PATH = '/users';
 

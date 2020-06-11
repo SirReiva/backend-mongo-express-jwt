@@ -1,4 +1,4 @@
-import { fastValidator, validateError } from './common.validator';
+import { fastValidator, validateError } from '@Validators/common.validator';
 import { ValidationSchema } from 'fastest-validator';
 
 const CreatePostSchema: ValidationSchema = {

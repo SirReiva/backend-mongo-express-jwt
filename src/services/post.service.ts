@@ -1,9 +1,9 @@
-import PostModel, { IPostSchema } from '../schemas/post.schema';
-import { ErrorHandler } from '../error/index';
+import PostModel, { IPostSchema } from '@Schemas/post.schema';
+import { ErrorHandler } from '@Error/index';
 import { NOT_FOUND, FORBIDDEN } from 'http-status-codes';
-import { UserRole } from '../interfaces/user.model';
-import { IPost } from '../interfaces/post.model';
-import { IUserSchema } from '../schemas/user.schema';
+import { UserRole } from '@Interfaces/user.model';
+import { IPost } from '@Interfaces/post.model';
+import { IUserSchema } from '@Schemas/user.schema';
 
 export class PostService {
     /**

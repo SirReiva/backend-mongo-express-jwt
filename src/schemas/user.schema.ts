@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { Document, model, PaginateModel, Schema, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import validator from 'validator';
-import { IUser, UserRole } from '../interfaces/user.model';
+import { IUser, UserRole } from '@Interfaces/user.model';
 
 export interface IUserSchema extends Document, IUser {
     comparePassword: (p: string) => Promise<boolean>;

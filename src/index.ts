@@ -2,7 +2,7 @@ import os from 'os';
 import cluster from 'cluster';
 import { connect } from './database';
 import figlet from 'figlet';
-import config from './config';
+import config from '@Config/index';
 import { server } from './app';
 
 const isProd = process.env.NODE_ENV === 'production';

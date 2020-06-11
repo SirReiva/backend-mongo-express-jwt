@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
-import { AuthRequest } from '../middlewares/auth.middleware';
-import { PostService } from '../services/post.service';
-import { UpdatePostSchemaValidator } from '../validators/post.validator';
+import { AuthRequest } from '@Middlewares/auth.middleware';
+import { PostService } from '@Services/post.service';
+import { UpdatePostSchemaValidator } from '@Validators/post.validator';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
     res.status(CREATED).json(

@@ -1,13 +1,13 @@
 import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
-import UserModel from '../schemas/user.schema';
-import { ErrorHandler } from '../error';
-import { UserRole, IUser } from '../interfaces/user.model';
-import { IUserSchema } from '../schemas/user.schema';
+import UserModel from '@Schemas/user.schema';
+import { ErrorHandler } from '@Error/index';
+import { UserRole, IUser } from '@Interfaces/user.model';
+import { IUserSchema } from '@Schemas/user.schema';
 import {
     createToken,
     createRefeshToken,
     checkToken,
-} from '../middlewares/auth.middleware';
+} from '@Middlewares/auth.middleware';
 
 export class UserService {
     /**
