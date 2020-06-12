@@ -7,6 +7,8 @@ import {
     createToken,
     createRefeshToken,
     checkToken,
+    storeRefreshToken,
+    validateRefreshToken,
 } from '@Token/actions.token';
 
 export class UserService {
@@ -66,7 +68,10 @@ export class UserService {
         if (await user.comparePassword(password)) {
             return {
                 token: createToken(user),
-                refreshToken: createRefeshToken(user),
+                refreshToken: storeRefreshToken(
+                    user.id,
+                    createRefeshToken(user)
+                ),
             };
         }
         throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
@@ -81,8 +86,9 @@ export class UserService {
     ): Promise<{ token: string; refreshToken: string }> {
         if (!refreshToken)
             throw new ErrorHandler(BAD_REQUEST, 'No token provided');
-        const payload: any = await checkToken(refreshToken);
-        if (!payload) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
+        const payload = await checkToken(refreshToken);
+        if (!payload || !validateRefreshToken(payload.id, refreshToken))
+            throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
         const user = await UserModel.findOne({
             $and: [
                 { email: payload.email },
@@ -93,7 +99,7 @@ export class UserService {
         if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
         return {
             token: createToken(user),
-            refreshToken: createRefeshToken(user),
+            refreshToken: storeRefreshToken(user.id, createRefeshToken(user)),
         };
     }
 
