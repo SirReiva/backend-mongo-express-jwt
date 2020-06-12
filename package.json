@@ -5,15 +5,16 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "tsc-watch --onSuccess \"node -r ./tsconfig-paths-bootstrap.js --stack_trace_limit=100 -r trace -r clarify dist/index.js\"",
-        "build": "rimraf dist/* && tsc -p tsconfig.prod.json",
-        "start": "rimraf dist/* && tsc -p tsconfig.prod.json && cross-env NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/index.js",
+        "build": "npm run clean:dist && tsc -p tsconfig.prod.json",
+        "start": "npm run clean:dist && tsc -p tsconfig.prod.json && cross-env NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/index.js",
         "serve": "cross-env NODE_ENV=production node dist/index.js",
         "start:pm2": "pm2 start pm2.json",
         "test": "jest",
         "coverage": "jest --coverage",
         "majestic": "npx majestic",
-        "docs": "jsdoc -c jsdoc.json",
-        "clean:dist": "rimraf dist/*"
+        "docs": "npm run clean:docs && jsdoc -c ./jsdoc.json ",
+        "clean:dist": "rimraf dist/*",
+        "clean:docs": "rimraf docs/*"
     },
     "keywords": [],
     "author": "Reiva",
@@ -64,6 +65,7 @@
         "better-docs": "^2.0.1",
         "jest": "^25.3.0",
         "jsdoc": "^3.6.4",
+        "mongodb-memory-server": "^6.6.1",
         "rimraf": "^3.0.2",
         "supertest": "^4.0.2",
         "ts-jest": "^25.4.0",
