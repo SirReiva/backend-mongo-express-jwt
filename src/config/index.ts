@@ -5,6 +5,7 @@ export default {
     JWT_EXPIRATION: 3600,
     JWT_EXPIRATION_REFRESH: 126000,
     DB: {
+        NAME: 'csm',
         URL: 'mongodb://localhost/cms',
         USER: 'root',
         PASSWORD: 'root',

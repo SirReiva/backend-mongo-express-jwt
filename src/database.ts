@@ -1,5 +1,7 @@
 import mongoose, { ConnectionOptions } from 'mongoose';
 import config from '@Config/index';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+const isTest = process.env.NODE_ENV === 'testing';
 
 export const connect = () => {
     const dbOptions: ConnectionOptions = {
@@ -11,6 +13,13 @@ export const connect = () => {
         useCreateIndex: true,
         poolSize: 5,
     };
+
+    if (isTest) {
+        const mongod = new MongoMemoryServer();
+        return mongod
+            .getConnectionString()
+            .then((uri) => mongoose.connect(uri, dbOptions));
+    }
 
     const $p = mongoose.connect(config.DB.URL, dbOptions);
     const connection = mongoose.connection;
