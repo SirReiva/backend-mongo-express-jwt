@@ -22,14 +22,19 @@ export class PostService {
         await post.save();
         return await post.populate('author').execPopulate();
     }
-
-    static async getPublicPosts() {
+    /**
+     * @param  {number} [page=1] Current page
+     * @param  {number} [limit=10] Page size
+     */
+    static async getPublicPosts(page: number = 1, limit: number = 10) {
         return await PostModel.paginate(
             {
                 isPublic: true,
             },
             {
                 populate: 'author',
+                page,
+                limit,
             }
         );
     }

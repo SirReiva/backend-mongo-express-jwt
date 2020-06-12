@@ -9,8 +9,10 @@ export const createPost = async (req: AuthRequest, res: Response) => {
     );
 };
 
-export const getAllPublic = async (_req: Request, res: Response) => {
-    res.json(await PostService.getPublicPosts());
+export const getAllPublic = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    res.json(await PostService.getPublicPosts(page, limit));
 };
 
 export const getById = async (req: Request, res: Response) => {
