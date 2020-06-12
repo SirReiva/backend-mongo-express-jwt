@@ -22,6 +22,7 @@ export class PostService {
         await post.save();
         return await post.populate('author').execPopulate();
     }
+
     /**
      * @param  {number} [page=1] Current page
      * @param  {number} [limit=10] Page size

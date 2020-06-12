@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signIn, signUp, reSignIn } from '@Controllers/user.controller';
+import { UserController } from '@Controllers/user.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { ValidationGuard } from '@Middlewares/validator.middleware';
 import {
@@ -16,17 +16,17 @@ router
     .post(
         ROUTE_PATH + 'up',
         ValidationGuard(CreateUserSchemaValidator),
-        handlerExceptionRoute(signUp)
+        handlerExceptionRoute(UserController.signUp)
     )
     .post(
         ROUTE_PATH + 'in',
         ValidationGuard(SignInUserSchemaValidator),
-        handlerExceptionRoute(signIn)
+        handlerExceptionRoute(UserController.signIn)
     )
     .post(
         ROUTE_PATH + 'refresh',
         ValidationGuard(ReSignInUserSchemaValidator),
-        handlerExceptionRoute(reSignIn)
+        handlerExceptionRoute(UserController.reSignIn)
     );
 
 export default router;

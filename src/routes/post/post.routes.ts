@@ -1,12 +1,5 @@
 import { Router } from 'express';
-import {
-    createPost,
-    getAllPublic,
-    getById,
-    getPostBySlug,
-    updatePost,
-    deletePost,
-} from '@Controllers/post.controller';
+import { PostController } from '@Controllers/post.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRoleGuard } from '@Middlewares/role.middleware';
@@ -25,9 +18,12 @@ const router = Router();
 // router.use(RedisMiddleware);
 
 router
-    .get(ROUTE_PATH, handlerExceptionRoute(getAllPublic))
-    .get(ROUTE_PATH + '/slug/:slug', handlerExceptionRoute(getPostBySlug))
-    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(getById))
+    .get(ROUTE_PATH, handlerExceptionRoute(PostController.getAllPublic))
+    .get(
+        ROUTE_PATH + '/slug/:slug',
+        handlerExceptionRoute(PostController.getPostBySlug)
+    )
+    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(PostController.getById))
     .post(
         ROUTE_PATH,
         [
@@ -35,7 +31,7 @@ router
             AuthJWTGuard,
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
         ],
-        handlerExceptionRoute(createPost)
+        handlerExceptionRoute(PostController.createPost)
     )
     .put(
         ROUTE_PATH + '/:id',
@@ -44,12 +40,12 @@ router
             AuthJWTGuard,
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
         ],
-        handlerExceptionRoute(updatePost)
+        handlerExceptionRoute(PostController.updatePost)
     )
     .delete(
         ROUTE_PATH + '/:id',
         [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
-        handlerExceptionRoute(deletePost)
+        handlerExceptionRoute(PostController.deletePost)
     );
 
 export default router;

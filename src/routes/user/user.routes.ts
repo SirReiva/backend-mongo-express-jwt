@@ -1,9 +1,6 @@
 import { Router } from 'express';
-import {
-    getPrivatePostsByUserId,
-    getPublicPostsByUserId,
-} from '@Controllers/post.controller';
-import { getAll, getById, update } from '@Controllers/user.controller';
+import { PostController } from '@Controllers/post.controller';
+import { UserController } from '@Controllers/user.controller';
 import { handlerExceptionRoute } from '@Error/index';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRoleGuard } from '@Middlewares/role.middleware';
@@ -19,21 +16,21 @@ const router = Router();
 // router.use(RedisMiddleware);
 
 router
-    .get(ROUTE_PATH, handlerExceptionRoute(getAll))
-    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(getById))
+    .get(ROUTE_PATH, handlerExceptionRoute(UserController.getAll))
+    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(UserController.getById))
     .get(
         ROUTE_PATH + '/:id/posts',
-        handlerExceptionRoute(getPublicPostsByUserId)
+        handlerExceptionRoute(PostController.getPublicPostsByUserId)
     )
     .get(
         ROUTE_PATH + '/:id/posts/private',
         [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
-        handlerExceptionRoute(getPrivatePostsByUserId)
+        handlerExceptionRoute(PostController.getPrivatePostsByUserId)
     )
     .put(
         ROUTE_PATH + '/:id',
         [ValidationGuard(UpdateUserSchemaValidator), AuthJWTGuard],
-        handlerExceptionRoute(update)
+        handlerExceptionRoute(UserController.update)
     );
 
 export default router;

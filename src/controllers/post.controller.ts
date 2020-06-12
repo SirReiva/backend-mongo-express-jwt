@@ -3,53 +3,52 @@ import { PostService } from '@Services/post.service';
 import { Request, Response } from 'express';
 import { CREATED } from 'http-status-codes';
 
-export const createPost = async (req: AuthRequest, res: Response) => {
-    res.status(CREATED).json(
-        await PostService.createPost(req.body, req.user.id)
-    );
-};
+export class PostController {
+    static async createPost(req: AuthRequest, res: Response) {
+        res.status(CREATED).json(
+            await PostService.createPost(req.body, req.user.id)
+        );
+    }
 
-export const getAllPublic = async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    res.json(await PostService.getPublicPosts(page, limit));
-};
+    static async getAllPublic(req: Request, res: Response) {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        res.json(await PostService.getPublicPosts(page, limit));
+    }
 
-export const getById = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    res.json(await PostService.getPublicPostById(id));
-};
+    static async getById(req: Request, res: Response) {
+        const { id } = req.params;
+        res.json(await PostService.getPublicPostById(id));
+    }
 
-export const getPublicPostsByUserId = async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const { id } = req.params;
-    res.json(await PostService.getPublicPostsByUserId(id, page, limit));
-};
+    static async getPublicPostsByUserId(req: Request, res: Response) {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const { id } = req.params;
+        res.json(await PostService.getPublicPostsByUserId(id, page, limit));
+    }
 
-export const getPrivatePostsByUserId = async (
-    req: AuthRequest,
-    res: Response
-) => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const { id } = req.params;
-    res.json(
-        await PostService.getPrivatePostsByUserId(req.user, id, page, limit)
-    );
-};
+    static async getPrivatePostsByUserId(req: AuthRequest, res: Response) {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const { id } = req.params;
+        res.json(
+            await PostService.getPrivatePostsByUserId(req.user, id, page, limit)
+        );
+    }
 
-export const getPostBySlug = async (req: Request, res: Response) => {
-    const { slug } = req.params;
-    res.json(await PostService.getPostBySlug(slug));
-};
+    static async getPostBySlug(req: Request, res: Response) {
+        const { slug } = req.params;
+        res.json(await PostService.getPostBySlug(slug));
+    }
 
-export const updatePost = async (req: AuthRequest, res: Response) => {
-    const { id } = req.params;
-    res.json(await PostService.update(id, req.body, req.user));
-};
+    static async updatePost(req: AuthRequest, res: Response) {
+        const { id } = req.params;
+        res.json(await PostService.update(id, req.body, req.user));
+    }
 
-export const deletePost = async (req: AuthRequest, res: Response) => {
-    const { id } = req.params;
-    res.json(await PostService.delete(id, req.user));
-};
+    static async deletePost(req: AuthRequest, res: Response) {
+        const { id } = req.params;
+        res.json(await PostService.delete(id, req.user));
+    }
+}
