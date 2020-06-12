@@ -6,9 +6,16 @@ import { IValidatorFn } from '@Interfaces/validatorFn.interface';
  */
 export const ValidationGuard = (
     ...validatorfns: IValidatorFn[]
-): RequestHandler => (req: Request, res: Response, next: NextFunction) => {
+): RequestHandler => async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        validatorfns.forEach((fn) => fn(req.body));
+        for (const fn of validatorfns) {
+            await fn(req.body);
+        }
+        next();
     } catch (error) {
         next(error);
     }

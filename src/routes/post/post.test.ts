@@ -1,6 +1,5 @@
 import supertest from 'supertest';
-const request = supertest("http://localhost:3000");
-
+const request = supertest('http://localhost:3000');
 
 // describe('Create Post', () => {
 //     it('should create a new user', () => {
@@ -16,8 +15,12 @@ const request = supertest("http://localhost:3000");
 
 describe('Get All Popts', () => {
     it('should create a new post', () => {
-        return request.get('/api/v1/posts').send().expect(200).then(res => {
-            expect(res.body).toHaveProperty('docs');
-        });
-    })
+        return request
+            .get('/api/v1/posts')
+            .send()
+            .expect(200)
+            .then((res) => {
+                expect(res.body).toHaveProperty('docs');
+            });
+    });
 });

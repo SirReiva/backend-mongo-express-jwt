@@ -1,7 +1,7 @@
 import mongoose, { ConnectionOptions } from 'mongoose';
 import config from '@Config/index';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-const isTest = process.env.NODE_ENV === 'testing';
+const isTest = process.env.NODE_ENV === 'test';
 
 export const connect = () => {
     const dbOptions: ConnectionOptions = {
