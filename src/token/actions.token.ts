@@ -41,11 +41,13 @@ export const createRefeshToken = function (user: IUserSchema): string {
     };
     return jwt.sign({ ...user.toJSON() }, config.JWTSECRET, jwtOps);
 };
+
 /**
  * @param  {string} userId user token owner
  * @param  {string} token
  * @returns string current token
  */
+
 export const storeRefreshToken = (userId: string, token: string): string => {
     memCacheRefeshToken.put(token, userId);
     return token;

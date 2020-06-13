@@ -2,13 +2,21 @@ import { Cache, CacheClass } from 'memory-cache';
 import { Request, Response } from 'express';
 
 const memCache = new Cache();
-const memCacheStores = new Map<string, CacheClass<any, any>>();
+const memCacheStores = new Map<string, CacheClass<string, any>>();
 
+/**
+ * @param  {string} store?
+ * @returns CacheClass
+ */
 const getMemCacheFromStore = (
     store?: string
 ): CacheClass<any, any> | undefined =>
     store ? memCacheStores.get(store) : memCache;
 
+/**
+ * @param  {number} duration
+ * @param  {string} store?
+ */
 export const MemCacheMiddleware = (duration: number, store?: string) => {
     if (store && !memCacheStores.has(store))
         memCacheStores.set(store, new Cache());
@@ -40,6 +48,9 @@ export const MemCacheMiddleware = (duration: number, store?: string) => {
     };
 };
 
+/**
+ * @param  {string} store?
+ */
 export const clearCache = (store?: string) => {
     try {
         getMemCacheFromStore(store)?.clear();
