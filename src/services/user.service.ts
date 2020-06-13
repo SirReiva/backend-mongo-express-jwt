@@ -9,7 +9,7 @@ import {
     checkToken,
     storeRefreshToken,
     validateRefreshToken,
-} from '@Token/actions.token';
+} from '@Utils/token';
 
 export class UserService {
     /**
