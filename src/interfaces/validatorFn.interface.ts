@@ -1,3 +1,1 @@
-export interface IValidatorFn {
-    (req: any): void;
-}
+export type IValidatorFn = (body: any) => void;

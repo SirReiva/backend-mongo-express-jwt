@@ -21,7 +21,7 @@ if (CPUS > 1 && activeCluster) {
     switch (cluster.isMaster) {
         case true:
             cluster.schedulingPolicy = cluster.SCHED_RR; // round-robin
-            figlet(config.PROJECT_NAME, (err, result) => console.log(result));
+            figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
             if (isProd) console.log('Producction Mode');
             console.log('Cluster Mode');
             for (let i = 0; i < CPUS; i++) {
@@ -48,7 +48,7 @@ if (CPUS > 1 && activeCluster) {
             break;
     }
 } else {
-    figlet(config.PROJECT_NAME, (err, result) => console.log(result));
+    figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
     if (isProd) console.log('Producction Mode');
     init();
     // process.on('uncaughtException', () => {});

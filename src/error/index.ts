@@ -20,7 +20,7 @@ export class ErrorHandler extends Error {
  * @param  {any} err Error ocurred before
  * @param  {Response} res http response
  */
-const handleError = (err: any, res: Response) => {
+const handleError = (err: ErrorHandler, res: Response) => {
     const { statusCode = 500, message } = err;
     res.status(statusCode).json({
         status: 'error',
@@ -37,9 +37,9 @@ const handleError = (err: any, res: Response) => {
  */
 export const handleErrorMiddleware = (
     err: any,
-    req: Request,
+    _req: Request,
     res: Response,
-    next: NextFunction
+    _next: NextFunction
 ) => {
     handleError(err, res);
 };

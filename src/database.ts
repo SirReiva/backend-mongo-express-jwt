@@ -3,7 +3,7 @@ import config from '@Config/index';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 const isTest = process.env.NODE_ENV === 'test';
 
-export const connect = () => {
+export const connect = (): Promise<typeof mongoose> => {
     const dbOptions: ConnectionOptions = {
         user: config.DB.USER,
         pass: config.DB.PASSWORD,

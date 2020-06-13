@@ -8,7 +8,7 @@ export const ValidationGuard = (
     ...validatorfns: IValidatorFn[]
 ): RequestHandler => async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     try {

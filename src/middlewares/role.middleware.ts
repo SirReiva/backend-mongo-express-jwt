@@ -9,7 +9,7 @@ import { AuthRequest } from '@Interfaces/authRequest.interface';
  */
 export const AuthRoleGuard = (roles: UserRole[]) => (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     if (!req.user) {
