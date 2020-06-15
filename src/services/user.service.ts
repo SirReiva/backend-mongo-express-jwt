@@ -57,8 +57,6 @@ export class UserService {
         name: string,
         password: string
     ): Promise<{ token: string; refreshToken: string }> {
-        if (!name || !password)
-            throw new ErrorHandler(BAD_REQUEST, 'bad request');
         const user = await UserModel.findOne({
             name,
             active: true,
@@ -84,8 +82,6 @@ export class UserService {
     static async refreshToken(
         refreshToken: string
     ): Promise<{ token: string; refreshToken: string }> {
-        if (!refreshToken)
-            throw new ErrorHandler(BAD_REQUEST, 'No token provided');
         const payload = await checkToken(refreshToken);
         if (!payload || !validateRefreshToken(payload.id, refreshToken))
             throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
@@ -141,6 +137,8 @@ export class UserService {
         partialUser: Partial<IUser>,
         currentUser?: IUserSchema
     ) {
+        if (id === undefined)
+            throw new ErrorHandler(NOT_FOUND, 'User not found');
         if (
             currentUser &&
             (currentUser.id === id || currentUser.role === UserRole.SUPER)
