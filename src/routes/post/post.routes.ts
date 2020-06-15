@@ -27,18 +27,18 @@ router
     .post(
         ROUTE_PATH,
         [
-            ValidationGuard(CreatePostSchemaValidator),
             AuthJWTGuard,
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
+            ValidationGuard(CreatePostSchemaValidator),
         ],
         handlerExceptionRoute(PostController.createPost)
     )
     .put(
         ROUTE_PATH + '/:id',
         [
-            ValidationGuard(UpdatePostSchemaValidator),
             AuthJWTGuard,
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
+            ValidationGuard(UpdatePostSchemaValidator),
         ],
         handlerExceptionRoute(PostController.updatePost)
     )

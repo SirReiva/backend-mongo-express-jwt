@@ -29,7 +29,7 @@ router
     )
     .put(
         ROUTE_PATH + '/:id',
-        [ValidationGuard(UpdateUserSchemaValidator), AuthJWTGuard],
+        [AuthJWTGuard, ValidationGuard(UpdateUserSchemaValidator)],
         handlerExceptionRoute(UserController.update)
     );
 

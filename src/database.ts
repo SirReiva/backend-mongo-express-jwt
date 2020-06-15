@@ -19,19 +19,19 @@ export const connect = (): Promise<typeof mongoose> => {
         return mongod
             .getConnectionString()
             .then((uri) => mongoose.connect(uri, dbOptions));
+    } else {
+        const $p = mongoose.connect(config.DB.URL, dbOptions);
+        const connection = mongoose.connection;
+        connection.once('open', () => console.log('DB connected'));
+
+        connection.on('error', (err) => console.error('Db error', err));
+
+        connection.on('disconnected', () => {
+            console.log('disconected');
+        });
+
+        return $p;
     }
-
-    const $p = mongoose.connect(config.DB.URL, dbOptions);
-    const connection = mongoose.connection;
-    connection.once('open', () => console.log('DB connected'));
-
-    connection.on('error', (err) => console.error('Db error', err));
-
-    connection.on('disconnected', () => {
-        console.log('disconected');
-    });
-
-    return $p;
 };
 
 /**

@@ -12,7 +12,7 @@ import { checkToken } from '@Utils/token';
  */
 export const AuthJWTGuard = async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     const token = (req.get('Authorization') || '').replace('Bearer ', '');
