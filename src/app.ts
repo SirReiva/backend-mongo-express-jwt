@@ -33,16 +33,18 @@ if (!isProd) {
     app.use(morgan('dev'));
     app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     // app.use(require('express-status-monitor')());
-    app.use(
-        swStats.getMiddleware({
-            swaggerSpec: swaggerDocument,
-            authentication: true,
-            onAuthenticate: (req, username, password) =>
-                username === config.SWAGGER.USER &&
-                password === config.SWAGGER.PASSWORD,
-        })
-    );
 }
+
+//private dashboard stats
+app.use(
+    swStats.getMiddleware({
+        swaggerSpec: swaggerDocument,
+        authentication: true,
+        onAuthenticate: (req, username, password) =>
+            username === config.SWAGGER.USER &&
+            password === config.SWAGGER.PASSWORD,
+    })
+);
 
 app.use(rateLimiterMiddleware);
 app.use(Routes);
