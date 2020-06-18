@@ -9,10 +9,11 @@ export class ErrorHandler extends Error {
      * @param  {number} statusCode HTTP Error code
      * @param  {string} message Error message
      */
-    constructor(statusCode: number, message: string) {
+    constructor(statusCode: number, message: string, trace?: string) {
         super();
         this.statusCode = statusCode;
         this.message = message;
+        this.stack = trace;
     }
 }
 
@@ -54,11 +55,15 @@ const errorParse = (error: Error, next: NextFunction) => {
         error instanceof MongooseError.CastError ||
         error instanceof MongoError
     )
-        next(new ErrorHandler(BAD_REQUEST, error.message));
+        next(new ErrorHandler(BAD_REQUEST, error.message, error.stack));
     else if (error instanceof ErrorHandler) next(error);
     else
         next(
-            new ErrorHandler(INTERNAL_SERVER_ERROR, 'Error performing action')
+            new ErrorHandler(
+                INTERNAL_SERVER_ERROR,
+                'Error performing action',
+                error.stack
+            )
         );
 };
 
