@@ -2,17 +2,17 @@ import PostModel, { IPostSchema } from '@Schemas/post.schema';
 import { ErrorHandler } from '@Error/index';
 import { NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import { UserRole } from '@Interfaces/user.interface';
-import { IPost } from '@Interfaces/post.interface';
+import { IPost, IPostCreateUpdate } from '@Interfaces/post.interface';
 import { IUserSchema } from '@Schemas/user.schema';
 
 export class PostService {
     /**
-     * @param  {Partial<IPostSchema>} postInfo Partial info for Post Schema
+     * @param  {IPostCreateUpdate} postInfo Partial info for Post Schema
      * @param  {string} id Author ID
      * @returns Promise
      */
     static async createPost(
-        postInfo: Partial<IPostSchema>,
+        postInfo: IPostCreateUpdate,
         id: string
     ): Promise<IPostSchema> {
         const post = new PostModel({
@@ -122,11 +122,15 @@ export class PostService {
 
     /**
      * @param  {string} id User ID
-     * @param  {Partial<IPost>} info Partial Post Schema
+     * @param  {IPostCreateUpdate} info Partial Post Schema
      * @param  {IUserSchema} user User Owner Schema
      * @returns Promise
      */
-    static async update(id: string, info: Partial<IPost>, user: IUserSchema) {
+    static async update(
+        id: string,
+        info: IPostCreateUpdate,
+        user: IUserSchema
+    ) {
         if (user.role === UserRole.SUPER) {
             const post = await PostModel.findByIdAndUpdate(
                 id,

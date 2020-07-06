@@ -10,3 +10,8 @@ export interface IPost {
     createdAt: string;
     updatedAt: string;
 }
+
+export type IPostCreateUpdate = Omit<
+    IPost,
+    'id' | 'slug' | 'createdAt' | 'updatedAt'
+>;

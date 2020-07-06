@@ -14,3 +14,5 @@ export interface IUser {
     updatedAt: string;
     active: true;
 }
+
+export type IUserUpdate = Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>;

@@ -1,7 +1,7 @@
 import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
 import UserModel from '@Schemas/user.schema';
 import { ErrorHandler } from '@Error/index';
-import { UserRole, IUser } from '@Interfaces/user.interface';
+import { UserRole, IUser, IUserUpdate } from '@Interfaces/user.interface';
 import { IUserSchema } from '@Schemas/user.schema';
 import {
     createToken,
@@ -129,12 +129,12 @@ export class UserService {
 
     /**
      * @param  {string} id User ID
-     * @param  {Partial<IUser>} partialUser Partial User Schema
+     * @param  {IUserUpdate} partialUser Partial User Schema
      * @param  {IUserSchema} currentUser? Currrent user action
      */
     static async update(
         id: string,
-        partialUser: Partial<IUser>,
+        partialUser: IUserUpdate,
         currentUser?: IUserSchema
     ) {
         if (id === undefined)
