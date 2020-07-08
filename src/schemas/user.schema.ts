@@ -6,7 +6,7 @@ import { IUser, UserRole } from '@Interfaces/user.interface';
 
 export interface IUserSchema extends Document, IUser {
     comparePassword: (p: string) => Promise<boolean>;
-    toJSON: () => Partial<IUserSchema>;
+    toJSON: () => Partial<IUser>;
 }
 
 interface UserModel<T extends Document> extends PaginateModel<T> {}
@@ -74,7 +74,7 @@ userSchema.methods.comparePassword = function (
     return bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.toJSON = function (): Partial<IUserSchema> {
+userSchema.methods.toJSON = function (): Partial<IUser> {
     return {
         id: this.id,
         name: this.name,

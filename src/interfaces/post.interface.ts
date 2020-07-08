@@ -1,10 +1,10 @@
-import { IUserSchema } from '@Schemas/user.schema';
+import { IUser } from './user.interface';
 
 export interface IPost {
     id?: any;
     title: string;
     content: string;
-    author: IUserSchema;
+    author: Partial<IUser> | string;
     isPublic: boolean;
     slug: string;
     createdAt: string;
