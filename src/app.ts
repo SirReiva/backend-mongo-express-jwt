@@ -1,6 +1,6 @@
 import compression from 'compression';
 import cors from 'cors';
-import http from 'http';
+import http, { Server } from 'http';
 import express from 'express';
 import { NO_CONTENT } from 'http-status-codes';
 import morgan from 'morgan';
@@ -16,7 +16,7 @@ import config from '@Config/index';
 const isProd = process.env.NODE_ENV === 'production';
 
 export const app = express();
-export const server = http.createServer(app);
+export const server: Server = http.createServer(app);
 
 app.use(cors());
 app.use(helmet());

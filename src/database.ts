@@ -3,7 +3,7 @@ import config from '@Config/index';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 const isTest = process.env.NODE_ENV === 'test';
 
-export const connect = (): Promise<typeof mongoose> => {
+export const connect = async (): Promise<typeof mongoose> => {
     const dbOptions: ConnectionOptions = {
         user: config.DB.USER,
         pass: config.DB.PASSWORD,
@@ -16,11 +16,13 @@ export const connect = (): Promise<typeof mongoose> => {
 
     if (isTest) {
         const mongod = new MongoMemoryServer();
-        return mongod
-            .getConnectionString()
-            .then((uri) => mongoose.connect(uri, dbOptions));
+        const uri = await mongod.getConnectionString('cms');
+        return await mongoose.connect(uri, {
+            useNewUrlParser: true,
+            useCreateIndex: true,
+        });
     } else {
-        const $p = mongoose.connect(config.DB.URL, dbOptions);
+        const con = await mongoose.connect(config.DB.URL, dbOptions);
         const connection = mongoose.connection;
         connection.once('open', () => console.log('DB connected'));
 
@@ -30,7 +32,7 @@ export const connect = (): Promise<typeof mongoose> => {
             console.log('disconected');
         });
 
-        return $p;
+        return con;
     }
 };
 

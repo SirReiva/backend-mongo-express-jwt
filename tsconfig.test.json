@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "commonjs",
+        "lib": ["es2017"],
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "typeRoots": ["./node_modules/@types"],
+        "paths": {
+            "@Interfaces/*": ["src/interfaces/*"],
+            "@Middlewares/*": ["src/middlewares/*"],
+            "@Config/*": ["src/config/*"],
+            "@Controllers/*": ["src/controllers/*"],
+            "@Schemas/*": ["src/schemas/*"],
+            "@Validators/*": ["src/validators/*"],
+            "@Services/*": ["src/services/*"],
+            "@Routes/*": ["src/routes/*"],
+            "@Utils/*": ["src/utils/*"],
+            "@Error/*": ["src/error/*"]
+        },
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true
+    },
+    "include": ["src/**/*.test.ts"],
+    "exclude": ["node_modules", "dist"]
+}

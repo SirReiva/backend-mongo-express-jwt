@@ -1,5 +1,8 @@
 import supertest from 'supertest';
-const request = supertest('http://localhost:3000');
+let request: supertest.SuperTest<supertest.Test>;
+process.env.NODE_ENV = 'test';
+let disconnect: () => Promise<void>;
+import { init } from '../../index';
 
 // describe('Create Post', () => {
 //     it('should create a new user', () => {
@@ -14,6 +17,10 @@ const request = supertest('http://localhost:3000');
 // });
 
 describe('Get All Popts', () => {
+    beforeAll(async () => {
+        disconnect = (await init()).disconnect;
+        request = supertest('http://127.0.0.1:3000');
+    });
     it('should create a new post', () => {
         return request
             .get('/api/v1/posts')
@@ -22,5 +29,8 @@ describe('Get All Popts', () => {
             .then((res) => {
                 expect(res.body).toHaveProperty('docs');
             });
+    });
+    afterAll(async () => {
+        await disconnect();
     });
 });

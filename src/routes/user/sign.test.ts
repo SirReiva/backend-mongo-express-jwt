@@ -1,9 +1,16 @@
 import supertest from 'supertest';
-const request = supertest('http://localhost:3000');
+let request: supertest.SuperTest<supertest.Test>;
+let disconnect: () => Promise<void>;
+process.env.NODE_ENV = 'test';
+import { init } from '../../index';
 
 describe('Sign Up & Sign In', () => {
+    beforeAll(async () => {
+        disconnect = (await init()).disconnect;
+        request = supertest('http://localhost:3000');
+    });
     it('should create a new user', (done) => {
-        return request
+        request
             .post('/api/v1/signup')
             .send({
                 email: 'jhhh@gmail.com',
@@ -17,17 +24,23 @@ describe('Sign Up & Sign In', () => {
     });
 
     it('should be logged', (done) => {
-        return request
+        request
             .post('/api/v1/signin')
             .send({
-                name: 'admin',
+                name: 'jhhh',
                 password: '123456',
             })
-            .expect(200)
             .then((res) => {
                 expect(res.body).toHaveProperty('token');
                 expect(res.body).toHaveProperty('refreshToken');
             })
+            .catch((err) => {
+                console.log('ERR', err);
+                expect(err).toBe(undefined);
+            })
             .finally(done);
+    });
+    afterAll(async () => {
+        await disconnect();
     });
 });
