@@ -1,0 +1,19 @@
+image: node:12.13.1
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+build-min-code:
+  stage: build
+  script:
+    - npm install
+
+run-unit-test:
+  stage: test
+  script:
+    - npm run test
