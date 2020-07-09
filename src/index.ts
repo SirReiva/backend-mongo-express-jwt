@@ -23,14 +23,14 @@ export const init = (): Promise<{
             rej(error);
         }
         const disconnect = (): Promise<void> => {
-            return new Promise((r, rj) => {
+            return new Promise((resolve, reject) => {
                 server.close(async (err) => {
                     try {
                         await mongo.disconnect();
-                        if (err) return rj(err);
-                        r();
+                        if (err) return reject(err);
+                        resolve();
                     } catch (error) {
-                        rj(error);
+                        reject(error);
                     }
                 });
             });
