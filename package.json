@@ -9,7 +9,7 @@
         "start": "npm run clean:dist && tsc -p tsconfig.prod.json && cross-env NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/index.js",
         "serve": "cross-env NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/index.js",
         "start:pm2": "pm2 start pm2.json",
-        "test": "cross-env NODE_ENV=test jest",
+        "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
         "coverage": "cross-env NODE_ENV=test jest --coverage",
         "majestic": "npx majestic",
         "docs": "npm run clean:docs && jsdoc -c ./jsdoc.json ",
