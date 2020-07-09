@@ -14,6 +14,7 @@ import * as swStats from 'swagger-stats';
 import config from '@Config/index';
 
 const isProd = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 
 export const app = express();
 export const server: Server = http.createServer(app);
@@ -36,17 +37,19 @@ if (!isProd) {
 }
 
 //private dashboard stats
-app.use(
-    swStats.getMiddleware({
-        swaggerSpec: swaggerDocument,
-        authentication: true,
-        onAuthenticate: (req, username, password) =>
-            username === config.SWAGGER.USER &&
-            password === config.SWAGGER.PASSWORD,
-    })
-);
+if (!isTest) {
+    app.use(
+        swStats.getMiddleware({
+            swaggerSpec: swaggerDocument,
+            authentication: true,
+            onAuthenticate: (req, username, password) =>
+                username === config.SWAGGER.USER &&
+                password === config.SWAGGER.PASSWORD,
+        })
+    );
+    app.use(rateLimiterMiddleware);
+}
 
-app.use(rateLimiterMiddleware);
 app.use(Routes);
 
 // errors handler

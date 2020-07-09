@@ -20,6 +20,7 @@ export const connect = async (): Promise<typeof mongoose> => {
         return await mongoose.connect(uri, {
             useNewUrlParser: true,
             useCreateIndex: true,
+            useUnifiedTopology: true,
         });
     } else {
         const con = await mongoose.connect(config.DB.URL, dbOptions);
