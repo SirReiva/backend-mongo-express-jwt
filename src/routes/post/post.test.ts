@@ -21,6 +21,10 @@ describe('Get All Popts', () => {
         disconnect = (await init()).disconnect;
         request = supertest('http://127.0.0.1:3000');
     });
+
+    afterAll(async () => {
+        await disconnect();
+    });
     it('should create a new post', () => {
         return request
             .get('/api/v1/posts')
@@ -29,8 +33,5 @@ describe('Get All Popts', () => {
             .then((res) => {
                 expect(res.body).toHaveProperty('docs');
             });
-    });
-    afterAll(async () => {
-        await disconnect();
     });
 });

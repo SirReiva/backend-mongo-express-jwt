@@ -9,6 +9,11 @@ describe('Sign Up & Sign In', () => {
         disconnect = (await init()).disconnect;
         request = supertest('http://localhost:3000');
     });
+
+    afterAll(async () => {
+        await disconnect();
+    });
+
     it('should create a new user', (done) => {
         request
             .post('/api/v1/signup')
@@ -39,8 +44,5 @@ describe('Sign Up & Sign In', () => {
                 expect(err).toBe(undefined);
             })
             .finally(done);
-    });
-    afterAll(async () => {
-        await disconnect();
     });
 });
