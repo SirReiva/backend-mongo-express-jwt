@@ -1,10 +1,9 @@
-import { Router } from 'express';
 import { PostController } from '@Controllers/post.controller';
-import { handlerExceptionRoute } from '@Error/index';
+import { UserRole } from '@Interfaces/user.interface';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRoleGuard } from '@Middlewares/role.middleware';
-import { UserRole } from '@Interfaces/user.interface';
 import { ValidationGuard } from '@Middlewares/validator.middleware';
+import { ExtRouter } from '@Utils/Router/ExtRouter';
 import {
     CreatePostSchemaValidator,
     UpdatePostSchemaValidator,
@@ -12,18 +11,15 @@ import {
 
 const ROUTE_PATH = '/posts';
 
-const router = Router();
+const router = new ExtRouter();
 
 //router.use(ROUTE_PATH, MemCacheMiddleware(240, 'posts'));
 // router.use(RedisMiddleware);
 
 router
-    .get(ROUTE_PATH, handlerExceptionRoute(PostController.getAllPublic))
-    .get(
-        ROUTE_PATH + '/slug/:slug',
-        handlerExceptionRoute(PostController.getPostBySlug)
-    )
-    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(PostController.getById))
+    .get(ROUTE_PATH, PostController.getAllPublic)
+    .get(ROUTE_PATH + '/slug/:slug', PostController.getPostBySlug)
+    .get(ROUTE_PATH + '/:id', PostController.getById)
     .post(
         ROUTE_PATH,
         [
@@ -31,7 +27,7 @@ router
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
             ValidationGuard(CreatePostSchemaValidator),
         ],
-        handlerExceptionRoute(PostController.createPost)
+        PostController.createPost
     )
     .put(
         ROUTE_PATH + '/:id',
@@ -40,12 +36,12 @@ router
             AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER]),
             ValidationGuard(UpdatePostSchemaValidator),
         ],
-        handlerExceptionRoute(PostController.updatePost)
+        PostController.updatePost
     )
     .delete(
         ROUTE_PATH + '/:id',
         [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
-        handlerExceptionRoute(PostController.deletePost)
+        PostController.deletePost
     );
 
-export default router;
+export default router.router;

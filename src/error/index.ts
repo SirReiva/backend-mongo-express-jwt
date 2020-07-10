@@ -49,7 +49,7 @@ export const handleErrorMiddleware = (
  * @param  {Error} error Error ocurred inside route or middelware
  * @param  {NextFunction} next function to continue next route/middleware
  */
-const errorParse = (error: Error, next: NextFunction) => {
+export const errorParse = (error: Error, next: NextFunction) => {
     if (
         error instanceof MongooseError.ValidationError ||
         error instanceof MongooseError.CastError ||
