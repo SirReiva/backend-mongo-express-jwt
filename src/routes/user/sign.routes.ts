@@ -1,32 +1,31 @@
-import { Router } from 'express';
 import { UserController } from '@Controllers/user.controller';
-import { handlerExceptionRoute } from '@Error/index';
 import { ValidationGuard } from '@Middlewares/validator.middleware';
+import { ExtRouter } from '@Utils/Router/ExtRouter';
 import {
     CreateUserSchemaValidator,
-    SignInUserSchemaValidator,
     ReSignInUserSchemaValidator,
+    SignInUserSchemaValidator,
 } from '@Validators/user.validator';
 
 const ROUTE_PATH = '/sign';
 
-const router = Router();
+const router = new ExtRouter();
 
 router
     .post(
         ROUTE_PATH + 'up',
         ValidationGuard(CreateUserSchemaValidator),
-        handlerExceptionRoute(UserController.signUp)
+        UserController.signUp
     )
     .post(
         ROUTE_PATH + 'in',
         ValidationGuard(SignInUserSchemaValidator),
-        handlerExceptionRoute(UserController.signIn)
+        UserController.signIn
     )
     .post(
         ROUTE_PATH + 'refresh',
         ValidationGuard(ReSignInUserSchemaValidator),
-        handlerExceptionRoute(UserController.reSignIn)
+        UserController.reSignIn
     );
 
-export default router;
+export default router.router;
