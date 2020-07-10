@@ -46,9 +46,9 @@ export class PostService {
      */
     static async getPublicPostById(id: string): Promise<IPostSchema> {
         if (id === undefined)
-            throw new ErrorHandler(NOT_FOUND, 'User not found');
-        const user = await PostModel.findById(id).populate('author');
-        if (user) return user;
+            throw new ErrorHandler(NOT_FOUND, 'Post not found');
+        const post = await PostModel.findById(id).populate('author');
+        if (post) return post;
         throw new ErrorHandler(NOT_FOUND, 'Post not found');
     }
 
@@ -62,6 +62,8 @@ export class PostService {
         page: number = 1,
         limit: number = 10
     ) {
+        if (id === undefined)
+            throw new ErrorHandler(NOT_FOUND, 'User not found');
         return await PostModel.paginate(
             {
                 author: id,
