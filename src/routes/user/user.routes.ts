@@ -1,36 +1,32 @@
-import { Router } from 'express';
 import { PostController } from '@Controllers/post.controller';
 import { UserController } from '@Controllers/user.controller';
-import { handlerExceptionRoute } from '@Error/index';
+import { UserRole } from '@Interfaces/user.interface';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
 import { AuthRoleGuard } from '@Middlewares/role.middleware';
-import { UserRole } from '@Interfaces/user.interface';
 import { ValidationGuard } from '@Middlewares/validator.middleware';
+import { ExtRouter } from '@Utils/Router/ExtRouter';
 import { UpdateUserSchemaValidator } from '@Validators/user.validator';
 
 const ROUTE_PATH = '/users';
 
-const router = Router();
+const router = new ExtRouter();
 
 //router.use(ROUTE_PATH, MemCacheMiddleware(config.MEMCACHE_TIMEOUT, 'users'));
 // router.use(RedisMiddleware);
 
 router
-    .get(ROUTE_PATH, handlerExceptionRoute(UserController.getAll))
-    .get(ROUTE_PATH + '/:id', handlerExceptionRoute(UserController.getById))
-    .get(
-        ROUTE_PATH + '/:id/posts',
-        handlerExceptionRoute(PostController.getPublicPostsByUserId)
-    )
+    .get(ROUTE_PATH, UserController.getAll)
+    .get(ROUTE_PATH + '/:id', UserController.getById)
+    .get(ROUTE_PATH + '/:id/posts', PostController.getPublicPostsByUserId)
     .get(
         ROUTE_PATH + '/:id/posts/private',
         [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
-        handlerExceptionRoute(PostController.getPrivatePostsByUserId)
+        PostController.getPrivatePostsByUserId
     )
     .put(
         ROUTE_PATH + '/:id',
         [AuthJWTGuard, ValidationGuard(UpdateUserSchemaValidator)],
-        handlerExceptionRoute(UserController.update)
+        UserController.update
     );
 
-export default router;
+export default router.router;
