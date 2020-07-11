@@ -70,16 +70,13 @@ export const errorParse = (error: Error, next: NextFunction) => {
 /**
  * @param  {Function} Wrapper function to handle any error inside
  */
-export const handlerExceptionRoute = (fn: Function): any => (
+export const handlerExceptionRoute = async (fn: Function) => async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        fn(req, res)?.catch(($error: Error) => {
-            console.log('Promise Error', $error.name);
-            errorParse($error, next);
-        });
+        fn(req, res);
     } catch (error) {
         console.log('Not Promise Error', error.name);
         errorParse(error, next);
