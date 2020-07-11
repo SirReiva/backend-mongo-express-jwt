@@ -1,5 +1,5 @@
-import { Router, RouterOptions, RequestHandler } from 'express';
 import { errorParse } from '@Error/index';
+import { Router, RouterOptions } from 'express';
 
 export class ExtRouter {
     private _router: Router;
@@ -42,8 +42,14 @@ export class ExtRouter {
         return this;
     }
 
-    use() {
-        this._router.use.apply(this._router, arguments as any);
+    all(path: string, ...handlers: any[]) {
+        const hndls = this.prepareWrapper(handlers);
+        this._router.all(path, ...hndls);
+        return this;
+    }
+
+    use(...args: any[]) {
+        this._router.use.apply(this._router, args as any);
         return this;
     }
 
@@ -51,14 +57,10 @@ export class ExtRouter {
         if (handlers.length === 0)
             throw new Error('Invalid Handler parameters');
         let last = handlers.pop();
-        const tmpLast = (req: any, res: any, next: any) => {
+        const tmpLast = async (req: any, res: any, next: any) => {
             try {
-                last(req, res)?.catch(($error: Error) => {
-                    console.log('Promise Error', $error.name);
-                    errorParse($error, next);
-                });
+                last && (await last(req, res));
             } catch (error) {
-                console.log('Not Promise Error', error.name);
                 errorParse(error, next);
             }
         };
