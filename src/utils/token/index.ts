@@ -60,7 +60,7 @@ export const storeRefreshToken = (userId: string, token: string): string => {
 export const validateRefreshToken = (
     userId: string,
     token: string
-): Boolean => {
+): boolean => {
     const expectUserId = memCacheRefeshToken.get(token);
     if (expectUserId !== null && expectUserId === userId) {
         memCacheRefeshToken.del(token);
