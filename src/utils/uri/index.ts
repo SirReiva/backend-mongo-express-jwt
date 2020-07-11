@@ -3,7 +3,7 @@
  * @returns string
  */
 export const string_to_slug = (str: string): string => {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.trim(); // trim
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
