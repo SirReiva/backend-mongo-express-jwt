@@ -57,15 +57,10 @@ export class ExtRouter {
         if (handlers.length === 0)
             throw new Error('Invalid Handler parameters');
         let last = handlers.pop();
-        const tmpLast = (req: any, res: any, next: any) => {
+        const tmpLast = async (req: any, res: any, next: any) => {
             try {
-                last &&
-                    last(req, res)?.catch(($error: Error) => {
-                        console.log('Promise Error', $error.name);
-                        errorParse($error, next);
-                    });
+                last && (await last(req, res));
             } catch (error) {
-                console.log('Not Promise Error', error.name);
                 errorParse(error, next);
             }
         };
