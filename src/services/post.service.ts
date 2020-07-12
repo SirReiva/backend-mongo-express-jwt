@@ -47,7 +47,7 @@ export class PostService {
     static async getPublicPostById(id: string): Promise<IPostSchema> {
         if (id === undefined)
             throw new ErrorHandler(NOT_FOUND, 'Post not found');
-        const post = await PostModel.findById(id).populate('author');
+        const post = await PostModel.findById(id).populate('author').exec();
         if (post) return post;
         throw new ErrorHandler(NOT_FOUND, 'Post not found');
     }
