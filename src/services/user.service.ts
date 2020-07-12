@@ -91,7 +91,7 @@ export class UserService {
                 { name: payload.name },
                 { _id: payload.id },
             ],
-        });
+        }).exec();
         if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
         return {
             token: createToken(user),
@@ -122,7 +122,7 @@ export class UserService {
     static async getById(id: string): Promise<IUser> {
         if (id === undefined)
             throw new ErrorHandler(NOT_FOUND, 'User not found');
-        const user = await UserModel.findById(id);
+        const user = await UserModel.findById(id).exec();
         if (user) return user;
         throw new ErrorHandler(NOT_FOUND, 'User not found');
     }
@@ -151,7 +151,7 @@ export class UserService {
                 {
                     ...partialUser,
                 }
-            ).lean();
+            ).exec();
         }
         return new ErrorHandler(FORBIDDEN, 'No permission');
     }
