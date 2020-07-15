@@ -8,12 +8,13 @@ import {
     CreatePostSchemaValidator,
     UpdatePostSchemaValidator,
 } from '@Validators/post.validator';
+import { RedisMiddleware } from '@Middlewares/cache/redis-cache.middleware';
 
 const ROUTE_PATH = '/posts';
 
 const router = new ExtRouter();
 
-//router.use(ROUTE_PATH, MemCacheMiddleware(240, 'posts'));
+router.use(ROUTE_PATH, RedisMiddleware('240', 'posts'));
 // router.use(RedisMiddleware);
 
 router
