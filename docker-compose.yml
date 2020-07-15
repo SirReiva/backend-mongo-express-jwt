@@ -31,10 +31,19 @@ services:
             - mongo-compose-network
 
     # redis:
-    #   image: redis
-    #   container_name: cache
-    #   ports:
-    #     - 6379:6379
+    #     image: redis
+    #     container_name: cache
+    #     ports:
+    #         - 6379:6379
+    # redis-commander:
+    #     container_name: redis-commander
+    #     hostname: redis-commander
+    #     image: rediscommander/redis-commander:latest
+    #     restart: always
+    #     environment:
+    #         - REDIS_HOSTS=local:redis:6379
+    #     ports:
+    #         - '8083:8081'
     # swagger:
     #   image: swaggerapi/swagger-editor
     #   ports:
