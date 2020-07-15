@@ -19,6 +19,7 @@ export const init = (): Promise<{
         let mongo: typeof mongoose;
         try {
             mongo = await connect();
+            console.log('DB connected');
         } catch (error) {
             rej(error);
         }
