@@ -1,5 +1,5 @@
-import { Cache, CacheClass } from 'memory-cache';
 import { Request, Response } from 'express';
+import { Cache, CacheClass } from 'memory-cache';
 
 const memCache = new Cache();
 const memCacheStores = new Map<string, CacheClass<string, any>>();

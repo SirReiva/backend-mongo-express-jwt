@@ -1,6 +1,7 @@
 import { PostController } from '@Controllers/post.controller';
 import { UserRole } from '@Interfaces/user.interface';
 import { AuthJWTGuard } from '@Middlewares/auth.middleware';
+import { MemCacheMiddleware } from '@Middlewares/cache/mem-cache.middelware';
 import { AuthRoleGuard } from '@Middlewares/role.middleware';
 import { ValidationGuard } from '@Middlewares/validator.middleware';
 import { ExtRouter } from '@Utils/Router/ExtRouter';
@@ -13,7 +14,7 @@ const ROUTE_PATH = '/posts';
 
 const router = new ExtRouter();
 
-//router.use(ROUTE_PATH, MemCacheMiddleware(240, 'posts'));
+router.use(ROUTE_PATH, MemCacheMiddleware(240, 'posts'));
 // router.use(RedisMiddleware);
 
 router
