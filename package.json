@@ -65,6 +65,7 @@
         "@types/swagger-ui-express": "^4.1.2",
         "@types/validator": "^13.0.0",
         "better-docs": "^2.0.1",
+        "husky": "^4.2.5",
         "jest": "^25.3.0",
         "jsdoc": "^3.6.4",
         "mongodb-memory-server": "^6.6.1",
@@ -79,5 +80,11 @@
         "args": [
             "--config=./jest.config.js"
         ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run build",
+            "pre-push": "npm run build"
+        }
     }
 }
