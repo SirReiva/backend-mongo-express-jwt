@@ -1,9 +1,8 @@
 import { ErrorHandler } from '@Error/index';
-import { AuthRequest } from '@Interfaces/authRequest.interface';
 import UserModel from '@Schemas/user.schema';
+import { checkToken } from '@Utils/token';
 import { NextFunction, Request, Response } from 'express';
 import { UNAUTHORIZED } from 'http-status-codes';
-import { checkToken } from '@Utils/token';
 
 /**
  * @param  {Request} req http request
