@@ -29,6 +29,6 @@ export const AuthJWTGuard = async (
     if (!user) {
         return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
     }
-    (req as AuthRequest).user = user;
+    req.user = user;
     next();
 };
