@@ -2,44 +2,21 @@ import config from '@Config/index';
 import figlet from 'figlet';
 import { server } from './app';
 import { connect } from './database';
-import mongoose from 'mongoose';
-import { Server } from 'http';
 
-const isProd = process.env.NODE_ENV === 'production';
+// const isProd = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 
-export const init = (): Promise<{
-    server: Server;
-    mongo: typeof mongoose;
-    disconnect: () => Promise<void>;
-}> => {
-    return new Promise(async (res, rej) => {
-        console.log('Mode: ', process.env.NODE_ENV || 'DEV');
-        figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
-        let mongo: typeof mongoose;
-        try {
-            mongo = await connect();
-            console.log('DB connected');
-        } catch (error) {
-            rej(error);
-        }
-        const disconnect = (): Promise<void> => {
-            return new Promise((resolve, reject) => {
-                server.close(async (err) => {
-                    try {
-                        await mongo.disconnect();
-                        if (err) return reject(err);
-                        resolve();
-                    } catch (error) {
-                        reject(error);
-                    }
-                });
-            });
-        };
-        server.listen(3000, () => {
-            console.log('Listen on port: ', 3000);
-            res({ server, mongo, disconnect });
-        });
+export const init = async () => {
+    console.log('Mode: ', process.env.NODE_ENV || 'DEV');
+    figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
+    try {
+        await connect();
+        console.log('DB connected');
+    } catch (error) {
+        console.log(error);
+    }
+    server.listen(3000, () => {
+        console.log('Listen on port: ', 3000);
     });
 };
 

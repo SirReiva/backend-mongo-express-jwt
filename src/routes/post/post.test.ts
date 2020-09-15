@@ -1,8 +1,10 @@
+import { Mongoose } from 'mongoose';
 import supertest from 'supertest';
+import { app } from '../../app';
+import { connect } from '../../database';
 let request: supertest.SuperTest<supertest.Test>;
+let mongo: Mongoose;
 process.env.NODE_ENV = 'test';
-let disconnect: () => Promise<void>;
-import { init } from '../../index';
 
 // describe('Create Post', () => {
 //     it('should create a new user', () => {
@@ -18,19 +20,19 @@ import { init } from '../../index';
 
 describe('Get All Popts', () => {
     beforeAll(async () => {
-        disconnect = (await init()).disconnect;
-        request = supertest('http://127.0.0.1:3000');
+        mongo = await connect();
+        request = supertest(app);
     });
 
     afterAll(async () => {
-        await disconnect();
+        await mongo.disconnect();
     });
     it('should create a new post', () => {
         return request
             .get('/api/v1/posts')
             .send()
             .expect(200)
-            .then((res) => {
+            .then(res => {
                 expect(res.body).toHaveProperty('docs');
             });
     });

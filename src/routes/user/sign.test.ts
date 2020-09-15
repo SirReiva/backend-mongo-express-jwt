@@ -1,20 +1,22 @@
+import { Mongoose } from 'mongoose';
 import supertest from 'supertest';
+import { app } from '../../app';
+import { connect } from '../../database';
 let request: supertest.SuperTest<supertest.Test>;
-let disconnect: () => Promise<void>;
+let mongo: Mongoose;
 process.env.NODE_ENV = 'test';
-import { init } from '../../index';
 
 describe('Sign Up & Sign In', () => {
     beforeAll(async () => {
-        disconnect = (await init()).disconnect;
-        request = supertest('http://localhost:3000');
+        mongo = await connect();
+        request = supertest(app);
     });
 
     afterAll(async () => {
-        await disconnect();
+        await mongo.disconnect();
     });
 
-    it('should create a new user', (done) => {
+    it('should create a new user', done => {
         request
             .post('/api/v1/signup')
             .send({
@@ -22,24 +24,24 @@ describe('Sign Up & Sign In', () => {
                 name: 'jhhh',
                 password: '123456',
             })
-            .then((res) => {
+            .then(res => {
                 expect(res.body.name).toBe('jhhh');
             })
             .finally(done);
     });
 
-    it('should be logged', (done) => {
+    it('should be logged', done => {
         request
             .post('/api/v1/signin')
             .send({
                 name: 'jhhh',
                 password: '123456',
             })
-            .then((res) => {
+            .then(res => {
                 expect(res.body).toHaveProperty('token');
                 expect(res.body).toHaveProperty('refreshToken');
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log('ERR', err);
                 expect(err).toBe(undefined);
             })
