@@ -67,7 +67,7 @@
         "better-docs": "^2.0.1",
         "husky": "^4.2.5",
         "jest": "^25.3.0",
-        "jsdoc": "^3.6.4",
+        "jsdoc": "3.6.7",
         "mongodb-memory-server": "^6.6.1",
         "rimraf": "^3.0.2",
         "supertest": "^4.0.2",
