@@ -48,7 +48,7 @@
         "@types/bcrypt": "^3.0.0",
         "@types/compression": "^1.7.0",
         "@types/cors": "^2.8.6",
-        "@types/express": "^4.17.6",
+        "@types/express": "4.17.13",
         "@types/figlet": "^1.2.0",
         "@types/helmet": "0.0.45",
         "@types/ioredis": "^4.17.2",
