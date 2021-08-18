@@ -2,7 +2,7 @@ import compression from 'compression';
 import cors from 'cors';
 import http, { Server } from 'http';
 import express from 'express';
-import { NO_CONTENT } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import Routes from '@Routes/index';
@@ -56,4 +56,4 @@ app.use(Routes);
 app.use(handleErrorMiddleware);
 
 //fallback routes
-app.all('*', (req, res) => res.status(NO_CONTENT).send());
+app.all('*', (req, res) => res.status(HTTP_CODES.NO_CONTENT).send());
