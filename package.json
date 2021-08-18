@@ -65,7 +65,7 @@
         "@types/swagger-ui-express": "^4.1.2",
         "@types/validator": "^13.0.0",
         "better-docs": "^2.0.1",
-        "husky": "^4.2.5",
+        "husky": "4.3.8",
         "jest": "^26.0.0",
         "jsdoc": "^3.6.4",
         "mongodb-memory-server": "^6.6.1",
