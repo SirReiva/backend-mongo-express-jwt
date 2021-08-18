@@ -1,12 +1,12 @@
 import { AuthRequest } from '@Interfaces/authRequest.interface';
 import { UserService } from '@Services/user.service';
 import { Request, Response } from 'express';
-import { CREATED } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 
 export class UserController {
     static async signUp(req: Request, res: Response): Promise<void> {
         const { name, email, password, role } = req.body;
-        res.status(CREATED).json(
+        res.status(HTTP_CODES.CREATED).json(
             await UserService.createUser(name, email, password, role, req.user)
         );
     }

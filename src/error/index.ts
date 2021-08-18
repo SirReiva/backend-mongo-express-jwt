@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from 'express';
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 import { Error as MongooseError } from 'mongoose';
 import { MongoError } from 'mongodb';
 
@@ -22,7 +22,7 @@ export class ErrorHandler extends Error {
  * @param  {Response} res http response
  */
 const handleError = (err: ErrorHandler, res: Response) => {
-    const { statusCode = 500, message } = err;
+    const { statusCode = HTTP_CODES.INTERNAL_SERVER_ERROR, message } = err;
     res.status(statusCode).json({
         status: 'error',
         statusCode,
@@ -55,12 +55,12 @@ export const errorParse = (error: Error, next: NextFunction) => {
         error instanceof MongooseError.CastError ||
         error instanceof MongoError
     )
-        next(new ErrorHandler(BAD_REQUEST, error.message, error.stack));
+        next(new ErrorHandler(HTTP_CODES.BAD_REQUEST, error.message, error.stack));
     else if (error instanceof ErrorHandler) next(error);
     else
         next(
             new ErrorHandler(
-                INTERNAL_SERVER_ERROR,
+                HTTP_CODES.INTERNAL_SERVER_ERROR,
                 'Error performing action',
                 error.stack
             )

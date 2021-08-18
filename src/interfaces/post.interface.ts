@@ -4,7 +4,7 @@ export interface IPost {
     id?: any;
     title: string;
     content: string;
-    author: Partial<IUser> | string;
+    author: string;
     isPublic: boolean;
     slug: string;
     createdAt: string;

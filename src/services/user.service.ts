@@ -1,4 +1,4 @@
-import { BAD_REQUEST, NOT_FOUND, FORBIDDEN } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 import UserModel from '@Schemas/user.schema';
 import { ErrorHandler } from '@Error/index';
 import { UserRole, IUser, IUserUpdate } from '@Interfaces/user.interface';
@@ -10,6 +10,7 @@ import {
     storeRefreshToken,
     validateRefreshToken,
 } from '@Utils/token';
+import bcrypt from 'bcrypt';
 
 export class UserService {
     /**
@@ -28,16 +29,17 @@ export class UserService {
         currentUSer?: IUserSchema
     ): Promise<IUserSchema> {
         if (!name || !email || !password)
-            throw new ErrorHandler(BAD_REQUEST, 'bad request');
+            throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'bad request');
         const results = await UserModel.find({
             $or: [{ email }, { name }],
         });
         if (results.length > 0)
-            throw new ErrorHandler(BAD_REQUEST, 'Name or Email already in use');
+            throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'Name or Email already in use');
+        const salt = await bcrypt.genSalt(10);
         const newUser = new UserModel({
             email,
             name,
-            password,
+            password: await bcrypt.hash(password, salt),
             active: true,
             role:
                 currentUSer && currentUSer.role === UserRole.SUPER
@@ -61,9 +63,9 @@ export class UserService {
             name,
             active: true,
         });
-        if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
-
-        if (await user.comparePassword(password)) {
+        if (!user) throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'Wrong credentials');
+        
+        if (await bcrypt.compare(password, user.password)) {
             return {
                 token: createToken(user),
                 refreshToken: storeRefreshToken(
@@ -72,7 +74,7 @@ export class UserService {
                 ),
             };
         }
-        throw new ErrorHandler(BAD_REQUEST, 'Wrong credentials');
+        throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'Wrong credentials');
     }
 
     /**
@@ -84,7 +86,7 @@ export class UserService {
     ): Promise<{ token: string; refreshToken: string }> {
         const payload = await checkToken(refreshToken);
         if (!payload || !validateRefreshToken(payload.id, refreshToken))
-            throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
+            throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'Wrong refesh token');
         const user = await UserModel.findOne({
             $and: [
                 { email: payload.email },
@@ -92,7 +94,7 @@ export class UserService {
                 { _id: payload.id },
             ],
         }).exec();
-        if (!user) throw new ErrorHandler(BAD_REQUEST, 'Wrong refesh token');
+        if (!user) throw new ErrorHandler(HTTP_CODES.BAD_REQUEST, 'Wrong refesh token');
         return {
             token: createToken(user),
             refreshToken: storeRefreshToken(user.id, createRefeshToken(user)),
@@ -121,10 +123,10 @@ export class UserService {
      */
     static async getById(id: string): Promise<IUser> {
         if (id === undefined)
-            throw new ErrorHandler(NOT_FOUND, 'User not found');
+            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'User not found');
         const user = await UserModel.findById(id).exec();
         if (user) return user;
-        throw new ErrorHandler(NOT_FOUND, 'User not found');
+        throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'User not found');
     }
 
     /**
@@ -138,12 +140,12 @@ export class UserService {
         currentUser?: IUserSchema
     ) {
         if (id === undefined)
-            throw new ErrorHandler(NOT_FOUND, 'User not found');
+            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'User not found');
         if (
             currentUser &&
             (currentUser.id === id || currentUser.role === UserRole.SUPER)
         ) {
-            if (currentUser.role !== UserRole.SUPER) delete partialUser.role;
+            if (currentUser.role !== UserRole.SUPER) delete (partialUser as any).role;
             return await UserModel.findOneAndUpdate(
                 {
                     id,
@@ -153,6 +155,6 @@ export class UserService {
                 }
             ).exec();
         }
-        return new ErrorHandler(FORBIDDEN, 'No permission');
+        return new ErrorHandler(HTTP_CODES.FORBIDDEN, 'No permission');
     }
 }

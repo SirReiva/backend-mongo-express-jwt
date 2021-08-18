@@ -2,7 +2,7 @@ import { ErrorHandler } from '@Error/index';
 import UserModel from '@Schemas/user.schema';
 import { checkToken } from '@Utils/token';
 import { NextFunction, Request, Response } from 'express';
-import { UNAUTHORIZED } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 
 /**
  * @param  {Request} req http request
@@ -16,17 +16,17 @@ export const AuthJWTGuard = async (
 ) => {
     const token = (req.get('Authorization') || '').replace('Bearer ', '');
     if (!token) {
-        return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
+        return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
     }
     const payload: any = await checkToken(token);
     if (!payload) {
-        return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
+        return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
     }
     const user = await UserModel.findOne({
         $and: [{ name: payload.name }, { _id: payload.id }],
     });
     if (!user) {
-        return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
+        return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
     }
     req.user = user;
     next();

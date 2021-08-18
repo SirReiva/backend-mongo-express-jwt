@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
 import { ErrorHandler } from '@Error/index';
-import { UNAUTHORIZED, FORBIDDEN } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 import { UserRole } from '@Interfaces/user.interface';
 import { AuthRequest } from '@Interfaces/authRequest.interface';
 
@@ -13,10 +13,10 @@ export const AuthRoleGuard = (roles: UserRole[]) => (
     next: NextFunction
 ) => {
     if (!req.user) {
-        return next(new ErrorHandler(UNAUTHORIZED, 'UnAuthorized'));
+        return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
     }
     if (!roles.includes((req as AuthRequest).user.role)) {
-        return next(new ErrorHandler(FORBIDDEN, 'No permission'));
+        return next(new ErrorHandler(HTTP_CODES.FORBIDDEN, 'No permission'));
     }
     next();
 };

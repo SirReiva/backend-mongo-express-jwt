@@ -15,7 +15,7 @@ export const checkToken = (
     return new Promise((resolve, reject) => {
         jwt.verify(token, config.JWTSECRET, (err, decoded) => {
             if (err) return resolve(null);
-            return resolve(decoded);
+            return resolve(decoded as any);
         });
     });
 };

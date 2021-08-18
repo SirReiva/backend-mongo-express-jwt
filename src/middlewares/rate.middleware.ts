@@ -1,6 +1,7 @@
 import { RateLimiterMemory, IRateLimiterOptions } from 'rate-limiter-flexible';
 import { Response, Request, NextFunction } from 'express';
 import config from '@Config/index';
+import HTTP_CODES from 'http-status-codes'
 
 const opts: IRateLimiterOptions = {
     points: config.RATE.POINTS,
@@ -26,6 +27,6 @@ export const rateLimiterMiddleware = (
             next();
         })
         .catch(() => {
-            res.status(429).send('Too Many Requests');
+            res.status(HTTP_CODES.TOO_MANY_REQUESTS).send('Too Many Requests');
         });
 };

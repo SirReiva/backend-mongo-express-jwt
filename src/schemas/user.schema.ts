@@ -1,12 +1,10 @@
-import bcrypt from 'bcrypt';
-import { Document, model, PaginateModel, Schema, Query } from 'mongoose';
+import { IUser, UserRole } from '@Interfaces/user.interface';
+import { Document, LeanDocument, model, PaginateModel, Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import validator from 'validator';
-import { IUser, UserRole } from '@Interfaces/user.interface';
 
 export interface IUserSchema extends Document, IUser {
-    comparePassword: (p: string) => Promise<boolean>;
-    toJSON: () => Partial<IUser>;
+    toJSON: () => LeanDocument<this>;
 }
 
 interface UserModel<T extends Document> extends PaginateModel<T> {}
@@ -50,30 +48,6 @@ const userSchema = new Schema<IUserSchema>(
     }
 );
 
-userSchema.pre<IUserSchema>('save', async function (next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    next();
-});
-
-userSchema.pre<Query<IUserSchema>>('findOneAndUpdate', async function (next) {
-    const user = this.getUpdate();
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    next();
-});
-
-userSchema.methods.comparePassword = function (
-    password: string
-): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-};
-
 userSchema.methods.toJSON = function (): Partial<IUser> {
     return {
         id: this.id,
@@ -85,6 +59,6 @@ userSchema.methods.toJSON = function (): Partial<IUser> {
     };
 };
 
-userSchema.plugin(mongoosePaginate);
+userSchema.plugin(mongoosePaginate as any);
 
 export default model<IUserSchema>('User', userSchema) as UserModel<IUserSchema>;

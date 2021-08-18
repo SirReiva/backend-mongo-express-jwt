@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import UserModel from '@Schemas/user.schema';
-import { UNAUTHORIZED } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
+import bcrypt from 'bcrypt';
 
 /**
  * @param  {Request} req http request
@@ -25,7 +26,7 @@ const checkBasicUser = async (name: string, password: string) => {
         const user = await UserModel.findOne({
             name,
         });
-        return user && (await user.comparePassword(password));
+        return user && (await bcrypt.compare(password, user.password));
     } catch (error) {
         return false;
     }
@@ -36,7 +37,7 @@ const checkBasicUser = async (name: string, password: string) => {
  */
 const respondRequiredAuth = (res: Response) => {
     res.setHeader('WWW-Authenticate', 'Basic realm="cms"');
-    res.status(UNAUTHORIZED).send('Unauthorized');
+    res.status(HTTP_CODES.UNAUTHORIZED).send('Unauthorized');
 };
 
 /**

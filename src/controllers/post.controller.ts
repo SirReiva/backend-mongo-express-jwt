@@ -1,11 +1,11 @@
 import { AuthRequest } from '@Interfaces/authRequest.interface';
 import { PostService } from '@Services/post.service';
 import { Request, Response } from 'express';
-import { CREATED } from 'http-status-codes';
+import HTTP_CODES from 'http-status-codes';
 
 export class PostController {
     static async createPost(req: AuthRequest, res: Response): Promise<void> {
-        res.status(CREATED).json(
+        res.status(HTTP_CODES.CREATED).json(
             await PostService.createPost(req.body, req.user.id)
         );
     }

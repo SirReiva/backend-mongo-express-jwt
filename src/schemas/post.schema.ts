@@ -1,12 +1,10 @@
 import { IPost } from '@Interfaces/post.interface';
 import { string_to_slug } from '@Utils/uri';
-import { Document, model, PaginateModel, Query, Schema } from 'mongoose';
+import { Document, LeanDocument, model, PaginateModel, Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { IUserSchema } from './user.schema';
 
 export interface IPostSchema extends Document, IPost {
-    toJSON: () => Partial<IPost>;
-    author: IUserSchema;
+    toJSON: () => LeanDocument<this>;
 }
 
 interface PostModel<T extends Document> extends PaginateModel<T> {}
@@ -41,14 +39,8 @@ postSchema.pre<IPostSchema>('save', function (next) {
     next();
 });
 
-postSchema.pre<Query<IPostSchema>>('findOneAndUpdate', function (next) {
-    const post = this.getUpdate();
-    post.slug = string_to_slug(post.title);
-    next();
-});
-
 postSchema.methods.toJSON = function (): Partial<IPost> {
-    const { id, createdAt, updatedAt, title, content, slug, isPublic } = this;
+    const { id, createdAt, updatedAt, title, content, slug, isPublic, author } = this;
     const jSon: Partial<IPost> = {
         id,
         createdAt,
@@ -57,14 +49,11 @@ postSchema.methods.toJSON = function (): Partial<IPost> {
         content,
         slug,
         isPublic,
-        author:
-            typeof this.author === 'string'
-                ? this.author
-                : this.author.toJSON(),
+        author
     };
     return jSon;
 };
 
-postSchema.plugin(mongoosePaginate);
+postSchema.plugin(mongoosePaginate as any);
 
 export default model<IPostSchema>('Post', postSchema) as PostModel<IPostSchema>;

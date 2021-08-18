@@ -1,9 +1,10 @@
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Mongoose } from 'mongoose';
 import supertest from 'supertest';
 import { app } from '../../app';
 import { connect } from '../../database';
 let request: supertest.SuperTest<supertest.Test>;
-let mongo: Mongoose;
+let mongo: Mongoose | MongoMemoryServer;
 process.env.NODE_ENV = 'test';
 
 describe('Sign Up & Sign In', () => {
@@ -13,7 +14,10 @@ describe('Sign Up & Sign In', () => {
     });
 
     afterAll(async () => {
-        await mongo.disconnect();
+        //@ts-ignore
+        const endMongo = mongo.disconnect || mongo.stop;
+
+        await endMongo.bind(mongo)();
     });
 
     it('should create a new user', done => {

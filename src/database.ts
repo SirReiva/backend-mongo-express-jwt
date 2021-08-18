@@ -15,8 +15,8 @@ export const connect = async (): Promise<typeof mongoose> => {
     };
 
     if (isTest) {
-        const mongod = new MongoMemoryServer();
-        const uri = await mongod.getConnectionString('cms');
+        const mongod = await MongoMemoryServer.create();
+        const uri = await mongod.getUri('cms');
         return await mongoose.connect(uri, {
             useNewUrlParser: true,
             useCreateIndex: true,
