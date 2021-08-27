@@ -1,36 +1,34 @@
-import mongoose, { ConnectionOptions } from 'mongoose';
-import config from '@Config/index';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-const isTest = process.env.NODE_ENV === 'test';
+import mongoose, { ConnectionOptions } from "mongoose";
+import config from "@Config/index";
+import { MongoMemoryServer } from "mongodb-memory-server";
+const isTest = process.env.NODE_ENV === "test";
 
 export const connect = async (): Promise<typeof mongoose> => {
     const dbOptions: ConnectionOptions = {
-        user: config.DB.USER,
-        pass: config.DB.PASSWORD,
-        useFindAndModify: false,
+        auth: {
+            username: config.DB.USER,
+            password: config.DB.PASSWORD,
+        },
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true,
-        poolSize: 5,
     };
 
     if (isTest) {
         const mongod = await MongoMemoryServer.create();
-        const uri = await mongod.getUri('cms');
+        const uri = await mongod.getUri("cms");
         return await mongoose.connect(uri, {
             useNewUrlParser: true,
-            useCreateIndex: true,
             useUnifiedTopology: true,
         });
     } else {
         const con = await mongoose.connect(config.DB.URL, dbOptions);
         const connection = mongoose.connection;
-        connection.once('open', () => console.log('DB connected'));
+        connection.once("open", () => console.log("DB connected"));
 
-        connection.on('error', (err) => console.error('Db error', err));
+        connection.on("error", (err) => console.error("Db error", err));
 
-        connection.on('disconnected', () => {
-            console.log('disconected');
+        connection.on("disconnected", () => {
+            console.log("disconected");
         });
 
         return con;

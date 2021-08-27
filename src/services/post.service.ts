@@ -1,9 +1,9 @@
-import { ErrorHandler } from '@Error/index';
-import { IPostCreateUpdate } from '@Interfaces/post.interface';
-import { UserRole } from '@Interfaces/user.interface';
-import PostModel, { IPostSchema } from '@Schemas/post.schema';
-import { IUserSchema } from '@Schemas/user.schema';
-import HTTP_CODES from 'http-status-codes';
+import { ErrorHandler } from "@Error/index";
+import { IPostCreateUpdate } from "@Interfaces/post.interface";
+import { UserRole } from "@Interfaces/user.interface";
+import PostModel, { IPostSchema } from "@Schemas/post.schema";
+import { IUserSchema } from "@Schemas/user.schema";
+import HTTP_CODES from "http-status-codes";
 
 export class PostService {
     /**
@@ -20,7 +20,7 @@ export class PostService {
             author: id,
         });
         await post.save();
-        return await post.populate('author').execPopulate();
+        return await post.populate("author");
     }
 
     /**
@@ -33,7 +33,7 @@ export class PostService {
                 isPublic: true,
             },
             {
-                populate: 'author',
+                populate: "author",
                 page,
                 limit,
             }
@@ -46,10 +46,10 @@ export class PostService {
      */
     static async getPublicPostById(id: string): Promise<IPostSchema> {
         if (id === undefined)
-            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
-        const post = await PostModel.findById(id).populate('author').exec();
+            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
+        const post = await PostModel.findById(id).populate("author").exec();
         if (post) return post;
-        throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+        throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
     }
 
     /**
@@ -63,14 +63,14 @@ export class PostService {
         limit: number = 10
     ) {
         if (id === undefined)
-            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'User not found');
+            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "User not found");
         return await PostModel.paginate(
             {
                 author: id,
                 isPublic: true,
             },
             {
-                populate: 'author',
+                populate: "author",
                 page,
                 limit,
             }
@@ -93,14 +93,14 @@ export class PostService {
             !currentUser ||
             (id !== currentUser.id && currentUser.role !== UserRole.SUPER)
         )
-            throw new ErrorHandler(HTTP_CODES.FORBIDDEN, 'Action not allowed');
+            throw new ErrorHandler(HTTP_CODES.FORBIDDEN, "Action not allowed");
         return await PostModel.paginate(
             {
                 author: id,
                 isPublic: false,
             },
             {
-                populate: 'author',
+                populate: "author",
                 page,
                 limit,
             }
@@ -116,9 +116,10 @@ export class PostService {
             slug,
             isPublic: true,
         })
-            .populate('author')
+            .populate("author")
             .exec();
-        if (!post) throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+        if (!post)
+            throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
         return post;
     }
 
@@ -143,13 +144,18 @@ export class PostService {
                     new: true,
                 }
             ).exec();
-            if (!post) throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+            if (!post)
+                throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
             return post;
         } else {
             let post = await PostModel.findById(id).exec();
-            if (!post) throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+            if (!post)
+                throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
             if (post.author.toString() !== user.id)
-                throw new ErrorHandler(HTTP_CODES.FORBIDDEN, 'Unauthorized action');
+                throw new ErrorHandler(
+                    HTTP_CODES.FORBIDDEN,
+                    "Unauthorized action"
+                );
             post = await PostModel.findByIdAndUpdate(
                 id,
                 {
@@ -159,7 +165,8 @@ export class PostService {
                     new: true,
                 }
             ).exec();
-            if (!post) throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+            if (!post)
+                throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
             return post;
         }
     }
@@ -174,9 +181,13 @@ export class PostService {
             return await PostModel.findByIdAndDelete(id).exec();
         else {
             let post = await PostModel.findById(id).exec();
-            if (!post) throw new ErrorHandler(HTTP_CODES.NOT_FOUND, 'Post not found');
+            if (!post)
+                throw new ErrorHandler(HTTP_CODES.NOT_FOUND, "Post not found");
             if (post.author.toString() !== user.id)
-                throw new ErrorHandler(HTTP_CODES.FORBIDDEN, 'Unauthorized action');
+                throw new ErrorHandler(
+                    HTTP_CODES.FORBIDDEN,
+                    "Unauthorized action"
+                );
             return await PostModel.findByIdAndDelete(id).exec();
         }
     }

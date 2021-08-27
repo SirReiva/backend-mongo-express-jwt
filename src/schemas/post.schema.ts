@@ -1,7 +1,8 @@
-import { IPost } from '@Interfaces/post.interface';
-import { string_to_slug } from '@Utils/uri';
-import { Document, LeanDocument, model, PaginateModel, Schema } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import { IPost } from "@Interfaces/post.interface";
+import { string_to_slug } from "@Utils/uri";
+import { Document, LeanDocument, model, PaginateModel, Schema } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import userSchema from "./user.schema";
 
 export interface IPostSchema extends Document, IPost {
     toJSON: () => LeanDocument<this>;
@@ -14,15 +15,15 @@ const postSchema = new Schema<IPostSchema>(
         title: {
             unique: true,
             type: String,
-            required: [true, 'Title required'],
+            required: [true, "Title required"],
             trim: true,
             text: true,
         },
-        content: { type: String, required: [true, 'Content required'] },
+        content: { type: String, required: [true, "Content required"] },
         author: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: [true, 'User required'],
+            type: String,
+            ref: "User",
+            required: [true, "User required"],
         },
         isPublic: { type: Boolean, default: false },
         slug: { type: String, trim: true },
@@ -32,15 +33,16 @@ const postSchema = new Schema<IPostSchema>(
     }
 );
 
-postSchema.pre<IPostSchema>('save', function (next) {
+postSchema.pre<IPostSchema>("save", function (next) {
     const post = this;
-    if (!post.isModified('title')) return next();
+    if (!post.isModified("title")) return next();
     post.slug = string_to_slug(post.title);
     next();
 });
 
 postSchema.methods.toJSON = function (): Partial<IPost> {
-    const { id, createdAt, updatedAt, title, content, slug, isPublic, author } = this;
+    const { id, createdAt, updatedAt, title, content, slug, isPublic, author } =
+        this;
     const jSon: Partial<IPost> = {
         id,
         createdAt,
@@ -49,11 +51,11 @@ postSchema.methods.toJSON = function (): Partial<IPost> {
         content,
         slug,
         isPublic,
-        author
+        author,
     };
     return jSon;
 };
 
 postSchema.plugin(mongoosePaginate as any);
 
-export default model<IPostSchema>('Post', postSchema) as PostModel<IPostSchema>;
+export default model<IPostSchema>("Post", postSchema) as PostModel<IPostSchema>;

@@ -1,7 +1,7 @@
-import { IUser, UserRole } from '@Interfaces/user.interface';
-import { Document, LeanDocument, model, PaginateModel, Schema } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
-import validator from 'validator';
+import { IUser, UserRole } from "@Interfaces/user.interface";
+import { Document, LeanDocument, model, PaginateModel, Schema } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import validator from "validator";
 
 export interface IUserSchema extends Document, IUser {
     toJSON: () => LeanDocument<this>;
@@ -9,7 +9,7 @@ export interface IUserSchema extends Document, IUser {
 
 interface UserModel<T extends Document> extends PaginateModel<T> {}
 
-const userSchema = new Schema<IUserSchema>(
+export const userSchema = new Schema<IUserSchema>(
     {
         email: {
             type: String,
@@ -61,4 +61,4 @@ userSchema.methods.toJSON = function (): Partial<IUser> {
 
 userSchema.plugin(mongoosePaginate as any);
 
-export default model<IUserSchema>('User', userSchema) as UserModel<IUserSchema>;
+export default model<IUserSchema>("User", userSchema) as UserModel<IUserSchema>;
