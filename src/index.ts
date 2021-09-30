@@ -7,17 +7,17 @@ import { connect } from './database';
 const isTest = process.env.NODE_ENV === 'test';
 
 export const init = async () => {
-    console.log('Mode: ', process.env.NODE_ENV || 'DEV');
-    figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
-    try {
-        await connect();
-        console.log('DB connected');
-    } catch (error) {
-        console.log(error);
-    }
-    server.listen(3000, () => {
-        console.log('Listen on port: ', 3000);
-    });
+	console.log('Mode: ', process.env.NODE_ENV || 'DEV');
+	figlet(config.PROJECT_NAME, (_err, result) => console.log(result));
+	try {
+		await connect();
+		console.log('DB connected');
+		server.listen(3000, () => {
+			console.log('Listen on port: ', 3000);
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 if (!isTest) init();

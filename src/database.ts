@@ -1,55 +1,55 @@
-import mongoose, { ConnectionOptions } from "mongoose";
-import config from "@Config/index";
-import { MongoMemoryServer } from "mongodb-memory-server";
-const isTest = process.env.NODE_ENV === "test";
+import mongoose, { ConnectionOptions } from 'mongoose';
+import config from '@Config/index';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+const isTest = process.env.NODE_ENV === 'test';
 
 export const connect = async (): Promise<typeof mongoose> => {
-    const dbOptions: ConnectionOptions = {
-        auth: {
-            username: config.DB.USER,
-            password: config.DB.PASSWORD,
-        },
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    };
+	const dbOptions: ConnectionOptions = {
+		auth: {
+			username: config.DB.USER,
+			password: config.DB.PASSWORD,
+		},
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	};
 
-    if (isTest) {
-        const mongod = await MongoMemoryServer.create();
-        const uri = await mongod.getUri("cms");
-        return await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-    } else {
-        const con = await mongoose.connect(config.DB.URL, dbOptions);
-        const connection = mongoose.connection;
-        connection.once("open", () => console.log("DB connected"));
+	if (isTest) {
+		const mongod = await MongoMemoryServer.create();
+		const uri = await mongod.getUri('cms');
+		return await mongoose.connect(uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+	} else {
+		const con = await mongoose.connect(config.DB.URL, dbOptions);
+		const connection = mongoose.connection;
+		connection.once('open', () => console.log('DB connected'));
 
-        connection.on("error", (err) => console.error("Db error", err));
+		connection.on('error', err => console.error('Db error', err));
 
-        connection.on("disconnected", () => {
-            console.log("disconected");
-        });
+		connection.on('disconnected', () => {
+			console.log('disconected');
+		});
 
-        return con;
-    }
+		return con;
+	}
 };
 
 /**
  * @param  {Function} cb Function to execute with transaction
  */
 export const transactionWrapper = async <T>(
-    cb: () => Promise<T>
+	cb: () => Promise<T>
 ): Promise<T> => {
-    const transaction = await mongoose.connection.startSession();
-    try {
-        const res = await cb();
-        transaction.endSession();
-        return res;
-    } catch (error) {
-        await transaction.abortTransaction();
-        throw error;
-    }
+	const transaction = await mongoose.connection.startSession();
+	try {
+		const res = await cb();
+		transaction.endSession();
+		return res;
+	} catch (error) {
+		await transaction.abortTransaction();
+		throw error;
+	}
 };
 
 // export const UserRepository = new Proxy({}, {

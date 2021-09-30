@@ -15,18 +15,18 @@ const router = new ExtRouter();
 // router.use(RedisMiddleware);
 
 router
-    .get(ROUTE_PATH, UserController.getAll)
-    .get(ROUTE_PATH + '/:id', UserController.getById)
-    .get(ROUTE_PATH + '/:id/posts', PostController.getPublicPostsByUserId)
-    .get(
-        ROUTE_PATH + '/:id/posts/private',
-        [AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
-        PostController.getPrivatePostsByUserId
-    )
-    .put(
-        ROUTE_PATH + '/:id',
-        [AuthJWTGuard, ValidationGuard(UpdateUserSchemaValidator)],
-        UserController.update
-    );
+	.get(ROUTE_PATH, UserController.getAll)
+	.get(ROUTE_PATH + '/:id', UserController.getById)
+	.get(ROUTE_PATH + '/:id/posts', PostController.getPublicPostsByUserId)
+	.get(
+		ROUTE_PATH + '/:id/posts/private',
+		[AuthJWTGuard, AuthRoleGuard([UserRole.ADMIN, UserRole.SUPER])],
+		PostController.getPrivatePostsByUserId
+	)
+	.put(
+		ROUTE_PATH + '/:id',
+		[AuthJWTGuard, ValidationGuard(UpdateUserSchemaValidator)],
+		UserController.update
+	);
 
 export default router.router;

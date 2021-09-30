@@ -3,48 +3,48 @@ import { ValidationSchema } from 'fastest-validator';
 import { UserRole } from '@Interfaces/user.interface';
 
 const CreateUserSchema: ValidationSchema = {
-    name: { type: 'string', min: 3, max: 255, required: true },
-    email: { type: 'email', normalize: true, required: true },
-    password: { type: 'string', required: true },
-    role: {
-        type: 'enum',
-        values: [UserRole.USER, UserRole.ADMIN, UserRole.USER],
-        default: UserRole.USER,
-    },
-    $$strict: true,
+	name: { type: 'string', min: 3, max: 255, required: true },
+	email: { type: 'email', normalize: true, required: true },
+	password: { type: 'string', required: true },
+	role: {
+		type: 'enum',
+		values: [UserRole.USER, UserRole.ADMIN, UserRole.USER],
+		default: UserRole.USER,
+	},
+	$$strict: true,
 };
 
 const SingInUserSchema: ValidationSchema = {
-    name: { type: 'string', min: 3, max: 255, required: true },
-    password: { type: 'string', required: true },
-    $$strict: true,
+	name: { type: 'string', min: 3, max: 255, required: true },
+	password: { type: 'string', required: true },
+	$$strict: true,
 };
 
 const ReSingInUserSchema: ValidationSchema = {
-    refreshToken: { type: 'string', required: true },
-    $$strict: true,
+	refreshToken: { type: 'string', required: true },
+	$$strict: true,
 };
 
 const UpdateUserSchema: ValidationSchema = {
-    name: { type: 'string', min: 3, max: 255 },
-    email: { type: 'email', normalize: true },
-    role: {
-        type: 'enum',
-        values: [UserRole.USER, UserRole.ADMIN, UserRole.USER],
-    },
-    password: { type: 'string' },
-    $$strict: true,
+	name: { type: 'string', min: 3, max: 255 },
+	email: { type: 'email', normalize: true },
+	role: {
+		type: 'enum',
+		values: [UserRole.USER, UserRole.ADMIN, UserRole.USER],
+	},
+	password: { type: 'string' },
+	$$strict: true,
 };
 
 export const SignInUserSchemaValidator = validateError(
-    fastValidator.compile(SingInUserSchema)
+	fastValidator.compile(SingInUserSchema)
 );
 export const ReSignInUserSchemaValidator = validateError(
-    fastValidator.compile(ReSingInUserSchema)
+	fastValidator.compile(ReSingInUserSchema)
 );
 export const CreateUserSchemaValidator = validateError(
-    fastValidator.compile(CreateUserSchema)
+	fastValidator.compile(CreateUserSchema)
 );
 export const UpdateUserSchemaValidator = validateError(
-    fastValidator.compile(UpdateUserSchema)
+	fastValidator.compile(UpdateUserSchema)
 );

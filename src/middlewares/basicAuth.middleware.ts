@@ -7,14 +7,12 @@ import bcrypt from 'bcrypt';
  * @param  {Request} req http request
  */
 const extractBasicAuth = (req: Request) => {
-    const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-    const [name, password] = Buffer.from(b64auth, 'base64')
-        .toString()
-        .split(':');
-    return {
-        name,
-        password,
-    };
+	const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
+	const [name, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+	return {
+		name,
+		password,
+	};
 };
 
 /**
@@ -22,22 +20,22 @@ const extractBasicAuth = (req: Request) => {
  * @param  {string} password
  */
 const checkBasicUser = async (name: string, password: string) => {
-    try {
-        const user = await UserModel.findOne({
-            name,
-        });
-        return user && (await bcrypt.compare(password, user.password));
-    } catch (error) {
-        return false;
-    }
+	try {
+		const user = await UserModel.findOne({
+			name,
+		});
+		return user && (await bcrypt.compare(password, user.password));
+	} catch (error) {
+		return false;
+	}
 };
 
 /**
  * @param  {Response} res http response
  */
 const respondRequiredAuth = (res: Response) => {
-    res.setHeader('WWW-Authenticate', 'Basic realm="cms"');
-    res.status(HTTP_CODES.UNAUTHORIZED).send('Unauthorized');
+	res.setHeader('WWW-Authenticate', 'Basic realm="cms"');
+	res.status(HTTP_CODES.UNAUTHORIZED).send('Unauthorized');
 };
 
 /**
@@ -46,30 +44,28 @@ const respondRequiredAuth = (res: Response) => {
  * @param  {NextFunction} next Function to continue
  */
 export const BasicAuthGuard = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
+	req: Request,
+	res: Response,
+	next: NextFunction
 ) => {
-    const { name, password } = extractBasicAuth(req);
-    if (await checkBasicUser(name, password)) {
-        next();
-    } else {
-        respondRequiredAuth(res);
-    }
+	const { name, password } = extractBasicAuth(req);
+	if (await checkBasicUser(name, password)) {
+		next();
+	} else {
+		respondRequiredAuth(res);
+	}
 };
 
 /**
  * @param  {RequestHandler} middleware to envolve
  */
-export const BasicAuthGuardWrapper = (middleware: RequestHandler) => async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    const { name, password } = extractBasicAuth(req);
-    if (await checkBasicUser(name, password)) {
-        middleware(req, res, next);
-    } else {
-        respondRequiredAuth(res);
-    }
-};
+export const BasicAuthGuardWrapper =
+	(middleware: RequestHandler) =>
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { name, password } = extractBasicAuth(req);
+		if (await checkBasicUser(name, password)) {
+			middleware(req, res, next);
+		} else {
+			respondRequiredAuth(res);
+		}
+	};

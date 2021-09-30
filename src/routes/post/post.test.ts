@@ -19,21 +19,21 @@ process.env.NODE_ENV = 'test';
 // });
 
 describe('Get All Popts', () => {
-    beforeAll(async () => {
-        mongo = await connect();
-        request = supertest(app);
-    });
+	beforeAll(async () => {
+		mongo = await connect();
+		request = supertest(app);
+	});
 
-    afterAll(async () => {
-        await mongo.disconnect();
-    });
-    it('should create a new post', () => {
-        return request
-            .get('/api/v1/posts')
-            .send()
-            .expect(200)
-            .then(res => {
-                expect(res.body).toHaveProperty('docs');
-            });
-    });
+	afterAll(async () => {
+		await mongo.disconnect();
+	});
+	it('should create a new post', () => {
+		return request
+			.get('/api/v1/posts')
+			.send()
+			.expect(200)
+			.then(res => {
+				expect(res.body).toHaveProperty('docs');
+			});
+	});
 });

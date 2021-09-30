@@ -24,30 +24,30 @@ app.use(helmet());
 app.use(compression()); // nginx better
 
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+	express.urlencoded({
+		extended: true,
+	})
 );
 app.use(express.json());
 
 if (!isProd) {
-    app.use(morgan('dev'));
-    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    // app.use(require('express-status-monitor')());
+	app.use(morgan('dev'));
+	app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+	// app.use(require('express-status-monitor')());
 }
 
 //private dashboard stats
 if (!isTest) {
-    app.use(
-        swStats.getMiddleware({
-            swaggerSpec: swaggerDocument,
-            authentication: true,
-            onAuthenticate: (req, username, password) =>
-                username === config.SWAGGER.USER &&
-                password === config.SWAGGER.PASSWORD,
-        })
-    );
-    app.use(rateLimiterMiddleware);
+	app.use(
+		swStats.getMiddleware({
+			swaggerSpec: swaggerDocument,
+			authentication: true,
+			onAuthenticate: (req, username, password) =>
+				username === config.SWAGGER.USER &&
+				password === config.SWAGGER.PASSWORD,
+		})
+	);
+	app.use(rateLimiterMiddleware);
 }
 
 app.use(Routes);

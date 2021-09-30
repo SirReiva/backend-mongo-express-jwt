@@ -7,16 +7,13 @@ import { AuthRequest } from '@Interfaces/authRequest.interface';
 /**
  * @param  {UserRole[]} roles Roles authorized
  */
-export const AuthRoleGuard = (roles: UserRole[]) => (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-) => {
-    if (!req.user) {
-        return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
-    }
-    if (!roles.includes((req as AuthRequest).user.role)) {
-        return next(new ErrorHandler(HTTP_CODES.FORBIDDEN, 'No permission'));
-    }
-    next();
-};
+export const AuthRoleGuard =
+	(roles: UserRole[]) => (req: Request, _res: Response, next: NextFunction) => {
+		if (!req.user) {
+			return next(new ErrorHandler(HTTP_CODES.UNAUTHORIZED, 'UnAuthorized'));
+		}
+		if (!roles.includes((req as AuthRequest).user.role)) {
+			return next(new ErrorHandler(HTTP_CODES.FORBIDDEN, 'No permission'));
+		}
+		next();
+	};
