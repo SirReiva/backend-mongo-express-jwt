@@ -1,26 +1,24 @@
-import mongoose, { ConnectionOptions } from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 import config from '@Config/index';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { MongoClientOptions } from 'mongodb';
 const isTest = process.env.NODE_ENV === 'test';
 
 export const connect = async (): Promise<typeof mongoose> => {
-	const dbOptions: ConnectionOptions = {
-		auth: {
-			username: config.DB.USER,
-			password: config.DB.PASSWORD,
-		},
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	};
+
 
 	if (isTest) {
+		const dbOptions: ConnectOptions = {};
 		const mongod = await MongoMemoryServer.create();
 		const uri = await mongod.getUri('cms');
-		return await mongoose.connect(uri, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
+		return await mongoose.connect(uri, dbOptions);
 	} else {
+		const dbOptions: ConnectOptions = {
+			auth: {
+				username: config.DB.USER,
+				password: config.DB.PASSWORD,
+			}
+		};
 		const con = await mongoose.connect(config.DB.URL, dbOptions);
 		const connection = mongoose.connection;
 		connection.once('open', () => console.log('DB connected'));
