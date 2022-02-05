@@ -66,7 +66,7 @@
         "@types/validator": "13.7.1",
         "better-docs": "2.7.1",
         "husky": "7.0.4",
-        "jest": "27.4.7",
+        "jest": "27.5.0",
         "jsdoc": "3.6.10",
         "mongodb-memory-server": "8.2.0",
         "rimraf": "^3.0.2",
