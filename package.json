@@ -58,7 +58,7 @@
         "@types/memory-cache": "0.2.2",
         "@types/mongoose-paginate-v2": "1.4.3",
         "@types/morgan": "^1.9.3",
-        "@types/node": "16.11.22",
+        "@types/node": "16.11.23",
         "@types/redis": "4.0.10",
         "@types/supertest": "^2.0.11",
         "@types/swagger-stats": "^0.95.4",
