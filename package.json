@@ -68,7 +68,7 @@
 		"jsdoc": "^3.6.10",
 		"mongodb-memory-server": "8.5.1",
 		"rimraf": "^3.0.2",
-		"supertest": "6.2.2",
+		"supertest": "6.2.3",
 		"ts-jest": "^27.1.4",
 		"tsc-watch": "5.0.3",
 		"tsconfig-paths-jest": "0.0.1",
