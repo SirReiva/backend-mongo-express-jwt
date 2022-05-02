@@ -42,7 +42,7 @@
 		"swagger-stats": "^0.99.2",
 		"swagger-ui-express": "^4.1.6",
 		"trace": "^3.1.1",
-		"tsconfig-paths": "^3.14.1",
+		"tsconfig-paths": "^4.0.0",
 		"validator": "^13.7.0"
 	},
 	"devDependencies": {
