@@ -38,7 +38,7 @@
 		"mongoose": "^7.0.0",
 		"mongoose-paginate-v2": "^1.6.3",
 		"morgan": "^1.10.0",
-		"rate-limiter-flexible": "^2.3.0",
+		"rate-limiter-flexible": "^3.0.0",
 		"swagger-stats": "^0.99.2",
 		"swagger-ui-express": "^5.0.0",
 		"trace": "^3.1.1",
