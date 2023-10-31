@@ -35,7 +35,7 @@
 		"jsonwebtoken": "^9.0.0",
 		"memory-cache": "^0.2.0",
 		"mongodb": "^6.0.0",
-		"mongoose": "^7.0.0",
+		"mongoose": "^8.0.0",
 		"mongoose-paginate-v2": "^1.6.3",
 		"morgan": "^1.10.0",
 		"rate-limiter-flexible": "^3.0.0",
